@@ -1,0 +1,3467 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUTABALL - L'avenir du football</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+                body {
+                    background: var(--bg-color);
+                    color: #fff;
+                    min-height: 100vh;
+                    overflow-x: hidden;
+                }
+
+                /* Réduction du menu */
+                header {
+                    background: var(--primary-color);
+                    box-shadow: var(--shadow);
+                    padding: 0.3rem 0;
+                    min-height: 48px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                }
+                .navbar {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 1rem;
+                    min-height: 40px;
+                }
+                .nav-links {
+                    display: flex;
+                    gap: 1.2rem;
+                    font-size: 1rem;
+                    align-items: center;
+                }
+                .nav-links a {
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: 600;
+                    padding: 0.2rem 0.7rem;
+                    border-radius: 6px;
+                    transition: background 0.2s, color 0.2s;
+                    font-size: 1rem;
+                }
+                .nav-links a:hover, .nav-links a.active {
+                    background: #fff2;
+                    color: #ffd700;
+                }
+
+                /* Inputs noirs, texte blanc */
+                .form-label {
+                    color: #fff !important;
+                }
+                .form-input, .upload-input {
+                    background: #000 !important;
+                    color: #fff !important;
+                    border: 1px solid var(--border-color);
+                    border-radius: 6px;
+                    padding: 0.6rem 1rem;
+                    font-size: 1rem;
+                    transition: border 0.2s, background 0.2s;
+                }
+                .form-input:focus, .upload-input:focus {
+                    outline: none;
+                    border-color: var(--primary-color);
+                    background: #222 !important;
+                    color: #fff !important;
+                }
+                .form-input::placeholder,
+                .upload-input::placeholder {
+                    color: #fff !important;
+                    opacity: 0.7;
+                }
+                .login-btn, .register-btn, .upload-btn {
+                    color: #fff !important;
+                }
+                .form-error {
+                    color: var(--danger-color);
+                    background: #000;
+                }
+
+                /* Classements & Statistiques : fond noir, texte blanc */
+                .stats-card {
+                    background: #000 !important;
+                    color: #fff !important;
+                    border-radius: 12px;
+                    box-shadow: 0 2px 12px #0003;
+                }
+                .stats-title,
+                .player-item,
+                .team-item,
+                .player-name,
+                .team-name,
+                .player-stats,
+                .team-stats,
+                .player-rank,
+                .team-rank {
+                    color: #fff !important;
+                }
+                .player-item, .team-item {
+                    background: #111 !important;
+                    border-radius: 8px;
+                }
+                .stat-item {
+                    background: #222 !important;
+                    color: #fff !important;
+                    border-radius: 6px;
+                }
+                .stat-value, .stat-label {
+                    color: #fff !important;
+                }
+        :root {
+            --primary-color: #e53935; /* Rouge moderne */
+            --secondary-color: #fff;   /* Blanc pur */
+            --accent-color: #f59e42;   /* Orange doux */
+            --danger-color: #ef4444;
+            --success-color: #22c55e;
+            --warning-color: #facc15;
+            --bg-color: #fff8f8;       /* Fond blanc rosé */
+            --card-bg: #fff;
+            --border-color: #e5e7eb;
+            --text-color: #22223b;
+            --muted-color: #6b7280;
+            --border-radius: 16px;
+            --shadow: 0 2px 16px 0 rgba(229,57,53,0.07);
+            --shadow-hover: 0 4px 24px 0 rgba(229,57,53,0.13);
+            --glow-effect: 0 0 16px 2px rgba(229,57,53,0.15);
+            --neon-border: 2px solid #e53935;
+            --dark-color: #22223b;
+            --light-color: #fff;
+        }
+        body.theme-blue {
+            --primary-color: #2563eb;
+            --secondary-color: #fff;
+            --accent-color: #06b6d4;
+            --danger-color: #2563eb;
+            --bg-color: #e3f0ff;
+            --card-bg: #fff;
+            --shadow: 0 2px 16px 0 rgba(37,99,235,0.07);
+            --shadow-hover: 0 4px 24px 0 rgba(37,99,235,0.13);
+            --glow-effect: 0 0 16px 2px rgba(37,99,235,0.15);
+            --neon-border: 2px solid #2563eb;
+        }
+        body.theme-red {
+            --primary-color: #e53935;
+            --secondary-color: #fff;
+            --accent-color: #f59e42;
+            --danger-color: #ef4444;
+            --bg-color: #fff8f8;
+            --card-bg: #fff;
+            --shadow: 0 2px 16px 0 rgba(229,57,53,0.07);
+            --shadow-hover: 0 4px 24px 0 rgba(229,57,53,0.13);
+            --glow-effect: 0 0 16px 2px rgba(229,57,53,0.15);
+            --neon-border: 2px solid #e53935;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s;
+        }
+
+        /* Page de connexion et inscription */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            background: var(--bg-color);
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid var(--primary-color);
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-logo i {
+            font-size: 2.5rem;
+            color: var(--danger-color);
+        }
+
+        .login-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .login-form, .register-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            text-align: left;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--muted-color);
+            font-size: 0.97rem;
+        }
+
+        .form-input {
+            padding: 0.85rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #fff6f6;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            background: #fff;
+        }
+
+        .login-btn, .register-btn {
+            padding: 0.9rem;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            color: white;
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: box-shadow 0.2s, transform 0.2s;
+            margin-top: 0.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .login-btn:hover, .register-btn:hover {
+            box-shadow: 0 4px 24px 0 rgba(229,57,53,0.18);
+            background: linear-gradient(90deg, var(--danger-color), var(--accent-color));
+        }
+
+        .login-footer {
+            margin-top: 1.5rem;
+            color: var(--muted-color);
+            font-size: 0.95rem;
+        }
+
+        .register-link, .login-link {
+            color: var(--danger-color);
+        }
+
+        .register-link:hover, .login-link:hover {
+            text-decoration: underline;
+            color: var(--primary-color);
+        }
+
+        .form-error {
+            color: var(--danger-color);
+            font-size: 0.97rem;
+            margin-bottom: -0.7rem;
+            margin-top: -0.7rem;
+        }
+
+        /* Application principale (cachée initialement) */
+        .app-container {
+            display: none;
+            background: var(--bg-color);
+        }
+
+        /* Header et Navigation */
+        header {
+            background: var(--primary-color);
+            color: var(--light-color);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--light-color);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.2rem;
+        }
+
+        .nav-links a {
+            color: var(--primary-color);
+            background: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--border-radius);
+            transition: background 0.2s, color 0.2s;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--danger-color);
+            color: var(--light-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 70%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: rgba(229, 57, 53, 0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .logout-btn {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Dropdown profil */
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--card-bg);
+            border: var(--neon-border);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            min-width: 250px;
+            display: none;
+            z-index: 1000;
+            margin-top: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            margin-bottom: 1rem;
+        }
+
+        .dropdown-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            overflow: hidden;
+        }
+
+        .dropdown-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dropdown-user-info {
+            flex: 1;
+        }
+
+        .dropdown-user-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .dropdown-user-email {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.8rem;
+            color: var(--light-color);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Section principale */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--secondary-color);
+            border-right: 2px solid var(--primary-color);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .competition-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .competition-item {
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .competition-item:hover {
+            background: #ffeaea;
+        }
+
+        .competition-item.active {
+            background: var(--primary-color);
+            color: var(--light-color);
+        }
+
+        .competition-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--danger-color);
+        }
+
+        /* Contenu principal */
+        .content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+        }
+
+        .section-title i {
+            font-size: 2.2rem;
+        }
+
+        /* Matchs en direct */
+        .live-matches-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .match-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: var(--neon-border);
+            box-shadow: var(--glow-effect);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .match-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .match-card.live::before {
+            content: 'EN DIRECT';
+            position: absolute;
+            top: 10px;
+            right: -30px;
+            background: var(--danger-color);
+            color: white;
+            padding: 4px 30px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .match-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+
+        .team-logo {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .team-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-name {
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .match-score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .match-time {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Classements et statistiques */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stats-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: var(--neon-border);
+        }
+
+        .stats-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        .player-list, .team-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .player-item, .team-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .player-item:hover, .team-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .player-rank, .team-rank {
+            font-weight: 800;
+            margin-right: 1rem;
+            width: 30px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .player-info, .team-info {
+            flex: 1;
+        }
+
+        .player-name, .team-name {
+            font-weight: 600;
+        }
+
+        .player-stats, .team-stats {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .player-photo, .team-logo-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1rem;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .player-photo img, .team-logo-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Équipes */
+        .teams-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .team-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            border: var(--neon-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .team-card-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border: 3px solid rgba(0, 212, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .team-card-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-card-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .team-card-details {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Joueurs par équipe */
+        .players-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .player-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            border: var(--neon-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .player-card-photo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .player-card-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .player-card-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .player-card-position {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .player-card-stats {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Détails de l'équipe */
+        .team-detail-header {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border: var(--neon-border);
+        }
+
+        .team-detail-logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border: 3px solid rgba(0, 212, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .team-detail-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-detail-info {
+            flex: 1;
+        }
+
+        .team-detail-name {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .team-detail-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .team-detail-meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .team-detail-meta-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .team-detail-meta-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Actualités */
+        .news-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .news-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: var(--neon-border);
+            transition: all 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
+        }
+
+        .news-image {
+            height: 180px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-title {
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .news-excerpt {
+            color: #aaa;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .news-date {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        /* Modal pour détails joueur */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--dark-color);
+            width: 90%;
+            max-width: 800px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: var(--neon-border);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.2);
+        }
+
+        .modal-header {
+            background: linear-gradient(90deg, var(--dark-color), var(--card-bg));
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--danger-color);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .player-detail-header {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .player-detail-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border: 3px solid var(--primary-color);
+            overflow: hidden;
+        }
+
+        .player-detail-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .player-detail-info {
+            flex: 1;
+        }
+
+        .player-detail-name {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .player-detail-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Upload d'images */
+        .image-upload-container {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: var(--neon-border);
+        }
+
+        .image-upload-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .upload-instructions {
+            color: #aaa;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .upload-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .upload-label {
+            font-weight: 600;
+        }
+
+        .upload-input {
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--light-color);
+        }
+
+        .upload-btn {
+            padding: 1rem;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: #fff;
+            border-top: 1px solid var(--border-color);
+            color: var(--muted-color);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--danger-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--danger-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .live-matches-container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+            
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                margin-top: 1rem;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            }
+            
+            .player-detail-header, .team-detail-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .team-detail-meta {
+                flex-wrap: wrap;
+            }
+            
+            .user-details {
+                display: none;
+            }
+            
+            .dropdown-menu {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                width: 100%;
+                border-radius: 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            /* ...existing code... */
+            body, .content, .login-box, .team-detail-header, .player-detail-header, .modal-content {
+                font-size: 0.85rem;
+            }
+            .section-title, .login-title, .stats-title, .image-upload-title {
+                font-size: 1rem !important;
+            }
+            .team-card-logo, .player-card-photo, .team-detail-logo, .player-detail-photo, .dropdown-avatar, .user-avatar {
+                width: 38px !important;
+                height: 38px !important;
+                min-width: 38px !important;
+                min-height: 38px !important;
+                max-width: 38px !important;
+                max-height: 38px !important;
+            }
+            .news-image {
+                height: 70px !important;
+                min-height: 70px !important;
+                max-height: 70px !important;
+            }
+            .team-card, .player-card, .news-card, .match-card {
+                padding: 0.4rem !important;
+                border-radius: 8px !important;
+                font-size: 0.85rem !important;
+            }
+            .player-card-name, .team-card-name, .news-title {
+                font-size: 0.9rem !important;
+            }
+            .match-score {
+                font-size: 1rem !important;
+            }
+            .footer-logo {
+                font-size: 0.9rem !important;
+            }
+            .footer-links {
+                gap: 0.7rem !important;
+                font-size: 0.8rem !important;
+            }
+            .copyright {
+                font-size: 0.7rem !important;
+            }
+        }
+
+        /* Ajout pour le modal d'image */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            align-items: center;
+            justify-content: center;
+        }
+        .image-modal-content {
+            background: #111;
+            border-radius: 16px;
+            max-width: 95vw;
+            max-height: 90vh;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px #000a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .image-modal-content img {
+            max-width: 80vw;
+            max-height: 60vh;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .image-modal-close {
+            position: absolute;
+            top: 10px; right: 18px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .image-modal-title {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .image-modal-desc {
+            color: #ccc;
+            font-size: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="theme-red">
+    <!-- Page de connexion -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box" id="loginBox">
+            <div class="login-logo">
+                <i class="fas fa-futbol"></i>
+                <span>FUTABALL</span>
+            </div>
+            <div id="loginFormWrapper">
+                <h2 class="login-title">Connectez-vous à FUTABALL</h2>
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Nom d'utilisateur</label>
+                        <input type="text" id="username" class="form-input" placeholder="Votre nom d'utilisateur" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required>
+                    </div>
+                    <div class="form-error" id="loginError" style="display:none;"></div>
+                    <button type="submit" class="login-btn">Se connecter</button>
+                </form>
+                <div class="login-footer">
+                    <p>Pas encore de compte? <a href="#" class="register-link" id="registerLink">Créer un compte</a></p>
+                    <p>Ou utilisez: <strong>admin</strong> / <strong>admin123</strong> ou <strong>user</strong> / <strong>user123</strong></p>
+                </div>
+            </div>
+            <div id="registerFormWrapper" style="display:none;">
+                <h2 class="login-title">Créer un compte</h2>
+                <form class="register-form" id="registerForm">
+                    <div class="form-group">
+                        <label for="reg_username" class="form-label">Nom d'utilisateur</label>
+                        <input type="text" id="reg_username" class="form-input" placeholder="Choisissez un nom d'utilisateur" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg_email" class="form-label">Email</label>
+                        <input type="email" id="reg_email" class="form-input" placeholder="Votre email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg_password" class="form-label">Mot de passe</label>
+                        <input type="password" id="reg_password" class="form-input" placeholder="Choisissez un mot de passe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg_password2" class="form-label">Confirmer le mot de passe</label>
+                        <input type="password" id="reg_password2" class="form-input" placeholder="Confirmez le mot de passe" required>
+                    </div>
+                    <div class="form-error" id="registerError" style="display:none;"></div>
+                    <button type="submit" class="register-btn">Créer mon compte</button>
+                </form>
+                <div class="login-footer">
+                    <p>Déjà inscrit? <a href="#" class="login-link" id="loginLink">Se connecter</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application principale -->
+    <div class="app-container" id="appContainer">
+        <!-- Header -->
+        <header>
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-futbol"></i>
+                    <span>FUTABALL</span>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <ul class="nav-links" id="navLinks">
+                    <li>
+                        <a href="#" class="active" data-section="accueil" title="Accueil">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="matches" title="Matchs en direct">
+                            <i class="fas fa-tv"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="classements" title="Classements">
+                            <i class="fas fa-trophy"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="equipes" title="Équipes">
+                            <i class="fas fa-users"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="actualites" title="Actualités">
+                            <i class="fas fa-newspaper"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-section="upload" title="Upload Images">
+                            <i class="fas fa-upload"></i>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="profile-dropdown">
+                    <div class="user-profile" id="userProfile">
+                        <div class="user-avatar" id="userAvatar">
+                            <!-- L'image sera chargée dynamiquement -->
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name" id="userName">Utilisateur</div>
+                            <div class="user-role" id="userRole">Membre</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <div class="dropdown-header">
+                            <div class="dropdown-avatar" id="dropdownAvatar">
+                                <!-- L'image sera chargée dynamiquement -->
+                            </div>
+                            <div class="dropdown-user-info">
+                                <div class="dropdown-user-name" id="dropdownUserName">Utilisateur</div>
+                                <div class="dropdown-user-email" id="dropdownUserEmail">utilisateur@futaball.com</div>
+                            </div>
+                        </div>
+                        
+                        <a href="#" data-section="profile"><i class="fas fa-user"></i> Mon Profil</a>
+                        <a href="#" data-section="settings"><i class="fas fa-cog"></i> Paramètres</a>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Contenu principal -->
+        <div class="main-container">
+            <!-- Sidebar des compétitions -->
+            <aside class="sidebar">
+                <h3><i class="fas fa-list-alt"></i> Compétitions</h3>
+                <div class="competition-list">
+                    <div class="competition-item active" data-competition="all">
+                        <div class="competition-icon"><i class="fas fa-globe"></i></div>
+                        <div class="competition-name">Toutes les compétitions</div>
+                    </div>
+                    <div class="competition-item" data-competition="coupe-maire">
+                        <div class="competition-icon"><i class="fas fa-trophy"></i></div>
+                        <div class="competition-name">Coupe Maire</div>
+                    </div>
+                    <div class="competition-item" data-competition="tournoi-zonale">
+                        <div class="competition-icon"><i class="fas fa-medal"></i></div>
+                        <div class="competition-name">Tournoi Zonale</div>
+                    </div>
+                    <div class="competition-item" data-competition="coupe-4-grands">
+                        <div class="competition-icon"><i class="fas fa-crown"></i></div>
+                        <div class="competition-name">Coupe 4 Grands</div>
+                    </div>
+                </div>
+                
+                <div class="quick-stats">
+                    <h3><i class="fas fa-chart-line"></i> En bref</h3>
+                    <div class="stat-item">
+                        <div class="stat-value">14</div>
+                        <div class="stat-label">Équipes actives</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Joueurs inscrits</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Matchs ce mois</div>
+                    </div>
+                </div>
+                
+                <div class="featured-player">
+                    <h3><i class="fas fa-star"></i> Joueur en vedette</h3>
+                    <div class="player-item" id="featuredPlayer">
+                        <!-- Le joueur en vedette sera inséré ici -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Contenu principal -->
+            <main class="content">
+                <!-- Section Accueil (visible par défaut) -->
+                <section id="accueil-section" class="content-section active">
+                    <h1 class="section-title"><i class="fas fa-home"></i> Bienvenue sur FUTABALL</h1>
+                    <p>L'application de football la plus avancée, avec des statistiques en temps réel, des matchs en direct et bien plus encore.</p>
+                    
+                    <h2 class="section-title" style="margin-top: 2rem;"><i class="fas fa-tv"></i> Matchs en direct maintenant</h2>
+                    <div class="live-matches-container" id="liveMatchesContainer">
+                        <!-- Les matchs en direct seront insérés ici par JavaScript -->
+                    </div>
+                    
+                    <h2 class="section-title" style="margin-top: 2rem;"><i class="fas fa-newspaper"></i> Dernières actualités</h2>
+                    <div class="news-container" id="newsContainer">
+                        <!-- Les actualités seront insérés ici par JavaScript -->
+                    </div>
+                </section>
+                
+                <!-- Section Matchs en direct -->
+                <section id="matches-section" class="content-section">
+                    <h1 class="section-title"><i class="fas fa-tv"></i> Matchs en direct</h1>
+                    <div class="match-filters">
+                        <button class="filter-btn active" data-filter="all">Tous</button>
+                        <button class="filter-btn" data-filter="live">En direct</button>
+                        <button class="filter-btn" data-filter="upcoming">À venir</button>
+                        <button class="filter-btn" data-filter="finished">Terminés</button>
+                    </div>
+                    
+                    <div class="live-matches-container" id="allMatchesContainer">
+                        <!-- Tous les matchs seront insérés ici par JavaScript -->
+                    </div>
+                </section>
+                
+                <!-- Section Classements -->
+                <section id="classements-section" class="content-section">
+                    <h1 class="section-title"><i class="fas fa-trophy"></i> Classements & Statistiques</h1>
+                    
+                    <div class="stats-container">
+                        <!-- Meilleurs buteurs -->
+                        <div class="stats-card">
+                            <h3 class="stats-title"><i class="fas fa-futbol"></i> Meilleurs buteurs</h3>
+                            <div class="player-list" id="topScorersList">
+                                <!-- Les meilleurs buteurs seront insérés ici par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- Meilleurs gardiens -->
+                        <div class="stats-card">
+                            <h3 class="stats-title"><i class="fas fa-tshirt"></i> Meilleurs gardiens</h3>
+                            <div class="player-list" id="topGoalkeepersList">
+                                <!-- Les meilleurs gardiens seront insérés ici par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- Cartons -->
+                        <div class="stats-card">
+                            <h3 class="stats-title"><i class="fas fa-card"></i> Cartons</h3>
+                            <div class="player-list" id="cardsList">
+                                <!-- Les joueurs avec cartons seront insérés ici par JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- Classement des équipes -->
+                        <div class="stats-card">
+                            <h3 class="stats-title"><i class="fas fa-list-ol"></i> Classement Coupe Maire</h3>
+                            <div class="team-list" id="teamRankingList">
+                                <!-- Le classement des équipes sera inséré ici par JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section Équipes -->
+                <section id="equipes-section" class="content-section">
+                    <h1 class="section-title"><i class="fas fa-users"></i> Équipes</h1>
+                    <p>Consultez les détails de toutes les équipes participantes</p>
+                    
+                    <div class="teams-container" id="teamsContainer">
+                        <!-- Les équipes seront insérées ici par JavaScript -->
+                    </div>
+                    
+                    <!-- Détails d'une équipe spécifique (caché par défaut) -->
+                    <div id="teamDetailSection" style="display: none;">
+                        <button id="backToTeams" class="back-btn" style="margin-bottom: 1.5rem; background: none; border: none; color: var(--primary-color); cursor: pointer; font-size: 1rem;">
+                            <i class="fas fa-arrow-left"></i> Retour aux équipes
+                        </button>
+                        
+                        <div id="teamDetailContent">
+                            <!-- Les détails de l'équipe seront insérés ici par JavaScript -->
+                        </div>
+                        </div>
+                        
+                        <form class="upload-form" id="uploadForm">
+                            <div class="upload-group">
+                                <label class="upload-label">Type d'image</label>
+                                <select class="upload-input" id="imageType" required>
+                                    <option value="">Sélectionnez un type</option>
+                                    <option value="team-logo">Logo d'équipe</option>
+                                    <option value="player-photo">Photo de joueur</option>
+                                    <option value="news-image">Image d'actualité</option>
+                                </select>
+                            </div>
+                            
+                            <div class="upload-group">
+                                <label class="upload-label">ID de l'élément</label>
+                                <input type="text" class="upload-input" id="elementId" placeholder="Ex: team-1, player-101, news-1" required>
+                            </div>
+                            
+                            <div class="upload-group">
+                                <label class="upload-label">URL de l'image</label>
+                                <input type="url" class="upload-input" id="imageUrl" placeholder="https://exemple.com/image.jpg" required>
+                            </div>
+                            
+                            <button type="submit" class="upload-btn">Sauvegarder l'image</button>
+                        </form>
+                        
+                        <div id="uploadStatus" style="margin-top: 1rem; padding: 1rem; border-radius: 8px; display: none;"></div>
+                    </div>
+                </section>
+                
+                <!-- Section Profil utilisateur -->
+                <section id="profile-section" class="content-section">
+                    <h1 class="section-title"><i class="fas fa-user"></i> Mon Profil</h1>
+                    
+                    <div class="team-detail-header">
+                        <div class="team-detail-logo">
+                            <div id="profileImageContainer">
+                                <!-- L'image de profil sera chargée dynamiquement -->
+                            </div>
+                        </div>
+                        <div class="team-detail-info">
+                            <div class="team-detail-name" id="profileName">Utilisateur</div>
+                            <div class="team-detail-meta">
+                                <div class="team-detail-meta-item">
+                                    <div class="team-detail-meta-label">Rôle</div>
+                                    <div class="team-detail-meta-value" id="profileRole">Membre</div>
+                                </div>
+                                <div class="team-detail-meta-item">
+                                    <div class="team-detail-meta-label">Membre depuis</div>
+                                    <div class="team-detail-meta-value" id="profileJoinDate">2023</div>
+                                </div>
+                                <div class="team-detail-meta-item">
+                                    <div class="team-detail-meta-label">Équipe favorite</div>
+                                    <div class="team-detail-meta-value" id="profileFavoriteTeam">Aucune</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h2 class="section-title" style="margin-top: 2rem;"><i class="fas fa-chart-bar"></i> Mes Statistiques</h2>
+                    <div class="player-detail-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="profileMatches">0</div>
+                            <div class="stat-label">Matchs suivis</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="profileTeams">0</div>
+                            <div class="stat-label">Équipes suivies</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="profileDays">1</div>
+                            <div class="stat-label">Jours actifs</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="profileNotifications">0</div>
+                            <div class="stat-label">Notifications</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Modal pour les détails des joueurs -->
+        <div class="modal" id="playerModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Détails du joueur</h2>
+                    <button class="close-modal" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body" id="playerModalBody">
+                    <!-- Contenu du modal sera inséré ici par JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal d'image générique -->
+        <div class="image-modal" id="imageModal">
+            <div class="image-modal-content">
+                <button class="image-modal-close" id="closeImageModal">&times;</button>
+                <img id="imageModalImg" src="" alt="">
+                <div class="image-modal-title" id="imageModalTitle"></div>
+                <div class="image-modal-desc" id="imageModalDesc"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-logo">FUTABALL</div>
+            <div class="footer-links">
+                <a href="#">À propos</a>
+                <a href="#">Contact</a>
+                <a href="#">Conditions d'utilisation</a>
+                <a href="#">Politique de confidentialité</a>
+                <a href="#">Devenir partenaire</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 FUTABALL. Tous droits réservés. | Conçu avec <i class="fas fa-heart" style="color: var(--danger-color);"></i> pour les fans de football
+            </div>
+        </footer>
+    </div>
+
+    <div style="position:fixed;top:10px;right:10px;z-index:2000;">
+        <button id="themeToggleBtn" style="padding:0.5rem 1rem;border-radius:8px;border:none;background:var(--primary-color);color:#fff;font-weight:700;box-shadow:var(--shadow);cursor:pointer;">
+            Thème Bleu
+        </button>
+    </div>
+
+    <script>
+        // Données complètes de l'application avec 14 équipes réelles
+        const appData = {
+            competitions: [
+                { id: 'coupe-maire', name: 'Coupe Maire', icon: 'trophy' },
+                { id: 'tournoi-zonale', name: 'Tournoi Zonale', icon: 'medal' },
+                { id: 'coupe-4-grands', name: 'Coupe 4 Grands', icon: 'crown' }
+            ],
+            
+            teams: [
+                { 
+                    id: 1, 
+                    name: 'Legal Hakoundé', 
+                    city: 'Sinthiou Bamambé', 
+                    coach: 'Aba', 
+                    founded: 1995, 
+                    stadium: 'Terrain Bandji', 
+                    capacity: 5000, 
+                    trophies: '1 Zonal, 1 Coupe Maire, 1 Départemental',
+                    logo: 'Capture d’écran 2026-01-09 032924.png',
+                    color: '#00d4ff',
+                    description: 'Équipe phare de Sinthiou Bamambé avec un palmarès impressionnant'
+                },
+                { 
+                    id: 2, 
+                    name: 'Daandee Leniol', 
+                    city: 'Sinthiou Bamambé', 
+                    coach: 'Barou Amy', 
+                    founded: 1998, 
+                    stadium: 'Terrain Bandji', 
+                    capacity: 3000, 
+                    trophies: '1 Trop Zonal',
+                    logo: 'LOGA Daande Lenol.png',
+                    color: '#6c00ff',
+                    description: 'Jeune équipe prometteuse avec un titre Zonal à son actif'
+                },
+                { 
+                    id: 3, 
+                    name: 'AS Bandji', 
+                    city: 'Bakel', 
+                    coach: 'Mamadou Dia', 
+                    founded: 1985, 
+                    stadium: 'Stade Municipal de Banadji', 
+                    capacity: 8000, 
+                    trophies: '2 Zonaux, 1 Coupe Maire',
+                    logo: 'https://via.placeholder.com/150/00ff88/0a0a1a?text=ABU',
+                    color: '#00ff88',
+                    description: 'Équipe historique de Bakel avec un riche palmarès'
+                },
+                { 
+                    id: 4, 
+                    name: 'Asc Pelital', 
+                    city: 'Goudiry', 
+                    coach: 'Ibrahima Sall', 
+                    founded: 1990, 
+                    stadium: 'Stade de Goudiry', 
+                    capacity: 6000, 
+                    trophies: '1 Zonal, 2 Départementaux',
+                    logo: 'https://via.placeholder.com/150/ff3366/0a0a1a?text=FCG',
+                    color: '#ff3366',
+                    description: 'Équipe dynamique de Goudiry, réputée pour son jeu offensif'
+                },
+                { 
+                    id: 5, 
+                    name: 'Lewlewal', 
+                    city: 'Sinthiou Bamambé', 
+                    coach: 'Ousmane Ndiaye', 
+                    founded: 1975, 
+                    stadium: 'Terrain Bandji', 
+                    capacity: 10000, 
+                    trophies: '3 Zonaux, 2 Coupes Maire, 1 National',
+                    logo: 'Capture d’écran 2026-01-09 041454.png',
+                    color: '#ffcc00',
+                    description: 'Plus grande équipe de la région avec un palmarès national'
+                },
+                { 
+                    id: 6, 
+                    name: 'pelital Bandji', 
+                    city: 'sinthiou bamambé', 
+                    coach: 'Alpha Diallo', 
+                    founded: 2000, 
+                    stadium: 'Terrain bandji ', 
+                    capacity: 4000, 
+                    trophies: '1 Zonal',
+                    logo: 'https://via.placeholder.com/150/9966ff/0a0a1a?text=KL',
+                    color: '#9966ff',
+                    description: 'Équipe jeune et ambitieuse de Kédougou'
+                },
+                { 
+                    id: 7, 
+                    name: 'Diamono', 
+                    city: 'Matam', 
+                    coach: 'Cheikh Tidiane', 
+                    founded: 1992, 
+                    stadium: 'Stade de Matam', 
+                    capacity: 7000, 
+                    trophies: '2 Zonaux, 1 Coupe Maire',
+                    logo: 'https://via.placeholder.com/150/00ccff/0a0a1a?text=MW',
+                    color: '#00ccff',
+                    description: 'Équipe guerrière de Matam, réputée pour sa solidité défensive'
+                },
+                { 
+                    id: 8, 
+                    name: 'Blocage', 
+                    city: 'Saint-Louis', 
+                    coach: 'Jean-Baptiste', 
+                    founded: 1960, 
+                    stadium: 'Stade de Saint-Louis', 
+                    capacity: 15000, 
+                    trophies: '5 Zonaux, 3 Coupes Maire, 2 Nationaux',
+                    logo: 'https://via.placeholder.com/150/0066cc/0a0a1a?text=SSL',
+                    color: '#0066cc',
+                    description: 'Équipe historique de Saint-Louis avec un riche palmarès'
+                },
+                { 
+                    id: 9, 
+                    name: 'Bamtare', 
+                    city: 'Dakar', 
+                    coach: 'Professeur Diop', 
+                    founded: 1955, 
+                    stadium: 'Stade de l\'Université', 
+                    capacity: 12000, 
+                    trophies: '8 Zonaux, 5 Coupes Maire, 3 Nationaux',
+                    logo: 'Capture d’écran 2026-01-09 034318.png',
+                    color: '#cc0000',
+                    description: 'Club universitaire prestigieux avec une longue histoire'
+                },
+                { 
+                    id: 10, 
+                    name: 'Monaco', 
+                    city: 'Thiès', 
+                    coach: 'Moustapha Fall', 
+                    founded: 1970, 
+                    stadium: 'Stade de Thiès', 
+                    capacity: 18000, 
+                    trophies: '6 Zonaux, 4 Coupes Maire, 2 Nationaux',
+                    logo: 'https://via.placeholder.com/150/663300/0a0a1a?text=TE',
+                    color: '#663300',
+                    description: 'Équipe puissante de Thiès, symbole de force et de détermination'
+                },
+                { 
+                    id: 11, 
+                    name: 'Hodere Diamano', 
+                    city: 'Kaolack', 
+                    coach: 'Abdourahmane', 
+                    founded: 1982, 
+                    stadium: 'Stade de Kaolack', 
+                    capacity: 9000, 
+                    trophies: '3 Zonaux, 2 Coupes Maire',
+                    logo: 'https://via.placeholder.com/150/ff6600/0a0a1a?text=KR',
+                    color: '#ff6600',
+                    description: 'Équipe technique de Kaolack, réputée pour son beau jeu'
+                },
+                { 
+                    id: 12, 
+                    name: 'Kawral', 
+                    city: 'Ziguinchor', 
+                    coach: 'Jules Mendy', 
+                    founded: 1995, 
+                    stadium: 'Stade de Ziguinchor', 
+                    capacity: 8000, 
+                    trophies: '2 Zonaux, 1 Coupe Maire',
+                    logo: 'Capture d’écran 2026-01-09 042229.png',
+                    color: '#009999',
+                    description: 'Équipe agressive de Ziguinchor, spécialiste des contre-attaques'
+                },
+                { 
+                    id: 13, 
+                    name: 'Wenody', 
+                    city: 'Louga', 
+                    coach: 'Mamadou Ndiaye', 
+                    founded: 1998, 
+                    stadium: 'Stade de Louga', 
+                    capacity: 6000, 
+                    trophies: '1 Zonal',
+                    logo: 'https://via.placeholder.com/150/6666ff/0a0a1a?text=LT',
+                    color: '#6666ff',
+                    description: 'Équipe rapide et imprévisible de Louga'
+                },
+                { 
+                    id: 14, 
+                    name: 'Seno', 
+                    city: 'Fatick', 
+                    coach: 'Saliou Diouf', 
+                    founded: 2005, 
+                    stadium: 'Stade de Fatick', 
+                    capacity: 5000, 
+                    trophies: 'En construction',
+                    logo: 'https://via.placeholder.com/150/ff33cc/0a0a1a?text=FP',
+                    color: '#ff33cc',
+                    description: 'Jeune équipe de Fatick en pleine ascension'
+                }
+            ],
+            
+            players: [
+                // Équipe 1: Legal Hakoundé (Sinthiou Bamambé)
+                { id: 101, name: 'Idrissa Gangué', teamId: 1, position: 'Gardien', age: 24, number: 1, goals: 0, assists: 0, yellowCards: 1, redCards: 0, cleanSheets: 8, saves: 45, photo: 'Capture d’écran 2026-01-09 032740.png', nationality: 'Sénégal', height: '185cm', weight: '82kg', value: '15M€' },
+                { id: 102, name: 'Ndikiri Mbaye', teamId: 1, position: 'Défenseur', age: 25, number: 2, goals: 2, assists: 4, yellowCards: 3, redCards: 0, photo: 'Capture d’écran 2026-01-09 032740', nationality: 'Sénégal', height: '178cm', weight: '75kg', value: '12M€' },
+                { id: 103, name: 'Ablaye Ly', teamId: 1, position: 'Défenseur', age: 30, number: 3, goals: 1, assists: 2, yellowCards: 5, redCards: 1, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=AL', nationality: 'Sénégal', height: '182cm', weight: '80kg', value: '10M€' },
+                { id: 104, name: 'Mamoudou Sow', teamId: 1, position: 'Milieu', age: 27, number: 4, goals: 5, assists: 8, yellowCards: 4, redCards: 0, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=MS', nationality: 'Sénégal', height: '176cm', weight: '73kg', value: '18M€' },
+                { id: 105, name: 'Gambié', teamId: 1, position: 'Milieu', age: 24, number: 5, goals: 8, assists: 6, yellowCards: 2, redCards: 0, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=G', nationality: 'Sénégal', height: '180cm', weight: '77kg', value: '22M€' },
+                { id: 106, name: 'Mamadou Talla', teamId: 1, position: 'Attaquant', age: 26, number: 6, goals: 12, assists: 4, yellowCards: 1, redCards: 0, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=MT', nationality: 'Sénégal', height: '183cm', weight: '79kg', value: '25M€' },
+                { id: 107, name: 'Amadou Sall', teamId: 1, position: 'Attaquant', age: 23, number: 7, goals: 10, assists: 5, yellowCards: 2, redCards: 0, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=AS', nationality: 'Sénégal', height: '179cm', weight: '76kg', value: '20M€' },
+                { id: 108, name: 'Moussa Sara Kanté', teamId: 1, position: 'Milieu', age: 29, number: 8, goals: 4, assists: 10, yellowCards: 3, redCards: 0, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=MSK', nationality: 'Sénégal', height: '177cm', weight: '74kg', value: '16M€' },
+                { id: 109, name: 'Amadou Ba', teamId: 1, position: 'Défenseur', age: 31, number: 9, goals: 1, assists: 3, yellowCards: 6, redCards: 0, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=AB', nationality: 'Sénégal', height: '184cm', weight: '81kg', value: '9M€' },
+                { id: 110, name: 'Amadou Lacore', teamId: 1, position: 'Gardien', age: 22, number: 10, goals: 0, assists: 0, yellowCards: 0, redCards: 0, cleanSheets: 3, saves: 22, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=AL', nationality: 'Sénégal', height: '188cm', weight: '84kg', value: '8M€' },
+                { id: 111, name: 'Djibi Konté', teamId: 1, position: 'Attaquant', age: 25, number: 11, goals: 7, assists: 3, yellowCards: 2, redCards: 1, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=DK', nationality: 'Sénégal', height: '181cm', weight: '78kg', value: '19M€' },
+                { id: 112, name: 'Abdoulaye Hawa', teamId: 1, position: 'Milieu', age: 27, number: 12, goals: 3, assists: 7, yellowCards: 4, redCards: 0, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=AH', nationality: 'Sénégal', height: '175cm', weight: '72kg', value: '14M€' },
+                { id: 113, name: 'Ciré Konté', teamId: 1, position: 'Défenseur', age: 26, number: 13, goals: 0, assists: 5, yellowCards: 5, redCards: 0, photo: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=CK', nationality: 'Sénégal', height: '186cm', weight: '83kg', value: '11M€' },
+                
+                // Équipe 2: Daandee Leniol (Sinthiou Bamambé)
+                { id: 201, name: 'Djiby Niang', teamId: 2, position: 'Gardien', age: 30, number: 1, goals: 0, assists: 0, yellowCards: 1, redCards: 0, cleanSheets: 6, saves: 38, photo: 'Capture d’écran 2026-01-09 034935.png', nationality: 'Sénégal', height: '190cm', weight: '86kg', value: '12M€' },
+                { id: 202, name: 'Mama Sall', teamId: 2, position: 'Défenseur', age: 28, number: 2, goals: 1, assists: 2, yellowCards: 4, redCards: 0, photo: 'Capture d’écran 2026-01-09 035335.png', nationality: 'Sénégal', height: '183cm', weight: '80kg', value: '10M€' },
+                { id: 203, name: 'Baidy Ba', teamId: 2, position: 'Défenseur', age: 23, number: 3, goals: 0, assists: 3, yellowCards: 6, redCards: 1, photo: 'WhatsApp Image 2026-01-04 at 23.53.51.jpeg', nationality: 'Sénégal', height: '185cm', weight: '82kg', value: '9M€' },
+                { id: 204, name: 'Ibrahima Sarr', teamId: 2, position: 'Défenseur', age: 29, number: 4, goals: 3, assists: 5, yellowCards: 3, redCards: 0, photo: 'Capture d’écran 2026-01-09 040614.png', nationality: 'Sénégal', height: '179cm', weight: '76kg', value: '16M€' },
+                { id: 205, name: 'Souleymane Sall', teamId: 2, position: 'defenseur', age: 25, number: 5, goals: 0, assists: 8, yellowCards: 2, redCards: 0, photo: 'Capture d’écran 2026-01-09 035507.png', nationality: 'Sénégal', height: '178cm', weight: '75kg', value: '14M€' },
+                { id: 206, name: 'Abdoulaye Coulibaly', teamId: 2, position: 'Attaquant', age: 24, number: 6, goals: 9, assists: 3, yellowCards: 1, redCards: 0, photo: 'https://via.placeholder.com/150/6c00ff/0a0a1a?text=AC', nationality: 'Sénégal', height: '182cm', weight: '79kg', value: '20M€' },
+                { id: 207, name: 'Abdoulaye Sy', teamId: 2, position: 'Attaquant', age: 23, number: 7, goals: 2, assists: 4, yellowCards: 2, redCards: 0, photo: 'Capture d’écran 2026-01-09 040138.png', nationality: 'Sénégal', height: '180cm', weight: '77kg', value: '18M€' },
+                { id: 208, name: 'Mamoudou Deme', teamId: 2, position: 'Milieu', age: 29, number: 8, goals: 1, assists: 2, yellowCards: 4, redCards: 0, photo: 'Capture d’écran 2026-01-09 035945.png', nationality: 'Sénégal', height: '177cm', weight: '74kg', value: '13M€' },
+                { id: 209, name: 'Abdrahmane Ba', teamId: 2, position: 'Attaquant', age: 21, number: 9, goals: 2, assists: 1, yellowCards: 7, redCards: 0, photo: 'Capture d’écran 2026-01-09 040838.png', nationality: 'Sénégal', height: '187cm', weight: '85kg', value: '8M€' },
+                { id: 210, name: 'Mamoudou Sidy Coulibaly', teamId: 2, position: 'Gardien', age: 21, number: 10, goals: 0, assists: 0, yellowCards: 0, redCards: 0, cleanSheets: 2, saves: 18, photo: 'https://via.placeholder.com/150/6c00ff/0a0a1a?text=MSC', nationality: 'Sénégal', height: '192cm', weight: '88kg', value: '7M€' },
+                { id: 211, name: 'Amadou Samba Ba', teamId: 2, position: 'Attaquant', age: 26, number: 11, goals: 5, assists: 2, yellowCards: 3, redCards: 0, photo: 'Capture d’écran 2026-01-09 034102.png', nationality: 'Sénégal', height: '184cm', weight: '81kg', value: '15M€' },
+                { id: 212, name: 'Moussa Djiby Ba', teamId: 2, position: 'Milieu', age: 28, number: 12, goals: 2, assists: 6, yellowCards: 5, redCards: 0, photo: 'https://via.placeholder.com/150/6c00ff/0a0a1a?text=MDB', nationality: 'Sénégal', height: '176cm', weight: '73kg', value: '12M€' },
+                { id: 213, name: 'Mbappe', teamId: 2, position: 'Attaquant', age: 25, number: 13, goals: 0, assists: 4, yellowCards: 4, redCards: 0, photo: 'Capture d’écran 2026-01-09 035114.png', nationality: 'Sénégal', height: '188cm', weight: '84kg', value: '10M€' },
+                { id: 214, name: 'Ibrahima Coulibaly', teamId: 2, position: 'Attaquant', age: 24, number: 14, goals: 7, assists: 3, yellowCards: 1, redCards: 0, photo: 'Capture d’écran 2026-01-09 034628.png', nationality: 'Sénégal', height: '181cm', weight: '78kg', value: '17M€' }
+                
+            ],
+            
+            matches: [
+                { id: 1, homeTeamId: 1, awayTeamId: 2, competition: 'coupe-maire', homeScore: 2, awayScore: 1, status: 'finished', date: '2023-11-10', time: '20:45' },
+                { id: 2, homeTeamId: 3, awayTeamId: 4, competition: 'tournoi-zonale', homeScore: 3, awayScore: 3, status: 'finished', date: '2023-11-11', time: '18:30' },
+                { id: 3, homeTeamId: 5, awayTeamId: 6, competition: 'coupe-4-grands', homeScore: 1, awayScore: 0, status: 'finished', date: '2023-11-11', time: '21:00' },
+                { id: 4, homeTeamId: 7, awayTeamId: 8, competition: 'coupe-maire', homeScore: 2, awayScore: 2, status: 'live', minute: '67', date: '2023-11-12', time: 'En cours' },
+                { id: 5, homeTeamId: 9, awayTeamId: 10, competition: 'tournoi-zonale', homeScore: 0, awayScore: 0, status: 'live', minute: '35', date: '2023-11-12', time: 'En cours' },
+                { id: 6, homeTeamId: 11, awayTeamId: 12, competition: 'coupe-4-grands', homeScore: 0, awayScore: 0, status: 'upcoming', date: '2023-11-12', time: '22:00' },
+                { id: 7, homeTeamId: 13, awayTeamId: 14, competition: 'coupe-maire', homeScore: 0, awayScore: 0, status: 'upcoming', date: '2023-11-13', time: '20:00' },
+                { id: 8, homeTeamId: 1, awayTeamId: 3, competition: 'tournoi-zonale', homeScore: 0, awayScore: 0, status: 'upcoming', date: '2023-11-13', time: '21:30' },
+                { id: 9, homeTeamId: 2, awayTeamId: 4, competition: 'coupe-maire', homeScore: 0, awayScore: 0, status: 'upcoming', date: '2023-11-14', time: '20:00' },
+                { id: 10, homeTeamId: 5, awayTeamId: 7, competition: 'tournoi-zonale', homeScore: 0, awayScore: 0, status: 'upcoming', date: '2023-11-14', time: '21:30' },
+            ],
+            
+            news: [
+                { 
+                    id: 1, 
+                    title: 'Legal Hakoundé remporte la Coupe Maire', 
+                    excerpt: 'L\'équipe de Sinthiou Bamambé a remporté la finale de la Coupe Maire face à Daandee Leniol avec un score de 2-1.', 
+                    date: '2023-11-11', 
+                    category: 'Coupe Maire',
+                    image: 'https://via.placeholder.com/300/00d4ff/0a0a1a?text=Coupe+Maire'
+                },
+                { 
+                    id: 2, 
+                    title: 'Record de buts cette saison', 
+                    excerpt: 'La saison enregistre un nombre record de buts avec une moyenne de 3,2 buts par match dans le championnat zonal.', 
+                    date: '2023-11-10', 
+                    category: 'Statistiques',
+                    image: 'https://via.placeholder.com/300/6c00ff/0a0a1a?text=Statistiques'
+                },
+                { 
+                    id: 3, 
+                    title: 'Nouveau stade pour Tambacounda FC', 
+                    excerpt: 'L\'équipe de Tambacounda inaugurera son nouveau stade high-tech le mois prochain avec une capacité de 10,000 places.', 
+                    date: '2023-11-09', 
+                    category: 'Infrastructure',
+                    image: 'https://via.placeholder.com/300/ffcc00/0a0a1a?text=Stade'
+                },
+                { 
+                    id: 4, 
+                    title: 'Blessure du capitaine de Saint-Louis', 
+                    excerpt: 'Le capitaine des Sea Lions sera absent pendant 6 semaines suite à une blessure au genou contractée lors du dernier match.', 
+                    date: '2023-11-08', 
+                    category: 'Blessures',
+                    image: 'https://via.placeholder.com/300/0066cc/0a0a1a?text=Blessure'
+                },
+                { 
+                    id: 5, 
+                    title: 'Technologie VAR implémentée', 
+                    excerpt: 'Le système VAR sera utilisé à partir de la prochaine saison dans toutes les compétitions majeures du championnat.', 
+                    date: '2023-11-07', 
+                    category: 'Technologie',
+                    image: 'https://via.placeholder.com/300/00ff88/0a0a1a?text=VAR'
+                },
+                { 
+                    id: 6, 
+                    title: 'Record d\'affluence au stade', 
+                    excerpt: 'Le match de Coupe Maire a attiré plus de 4,500 spectateurs, un record pour la compétition cette année.', 
+                    date: '2023-11-06', 
+                    category: 'Actualités',
+                    image: 'https://via.placeholder.com/300/ff3366/0a0a1a?text=Affluence'
+                },
+            ],
+            
+            topScorers: [
+                { playerId: 106, goals: 12, assists: 4 },
+                { playerId: 107, goals: 10, assists: 5 },
+                { playerId: 206, goals: 9, assists: 3 },
+                { playerId: 207, goals: 8, assists: 4 },
+                { playerId: 105, goals: 8, assists: 6 },
+                { playerId: 111, goals: 7, assists: 3 },
+                { playerId: 214, goals: 7, assists: 3 },
+                { playerId: 204, goals: 6, assists: 5 },
+                { playerId: 211, goals: 5, assists: 2 },
+                { id: 1001, playerId: 104, goals: 5, assists: 8 },
+            ],
+            
+            topGoalkeepers: [
+                { playerId: 101, cleanSheets: 8, saves: 45 },
+                { playerId: 201, cleanSheets: 6, saves: 38 },
+                { playerId: 110, cleanSheets: 3, saves: 22 },
+                { playerId: 210, cleanSheets: 2, saves: 18 },
+            ],
+            
+            cardsLeaders: [
+                { playerId: 209, yellowCards: 7, redCards: 0 },
+                { playerId: 103, yellowCards: 5, redCards: 1 },
+                { playerId: 203, yellowCards: 6, redCards: 1 },
+                { playerId: 113, yellowCards: 5, redCards: 0 },
+                { playerId: 109, yellowCards: 6, redCards: 0 },
+                { playerId: 212, yellowCards: 5, redCards: 0 },
+                { playerId: 102, yellowCards: 3, redCards: 0 },
+                { playerId: 111, yellowCards: 2, redCards: 1 },
+                { playerId: 104, yellowCards: 4, redCards: 0 },
+                { playerId: 205, yellowCards: 2, redCards: 0 },
+            ],
+            
+            teamRankings: [
+                { teamId: 1, points: 25, wins: 8, draws: 1, losses: 1, goalsFor: 24, goalsAgainst: 10 },
+                { teamId: 2, points: 22, wins: 7, draws: 1, losses: 2, goalsFor: 22, goalsAgainst: 12 },
+                { teamId: 5, points: 21, wins: 6, draws: 3, losses: 1, goalsFor: 21, goalsAgainst: 11 },
+                { teamId: 9, points: 20, wins: 6, draws: 2, losses: 2, goalsFor: 20, goalsAgainst: 12 },
+                { teamId: 10, points: 18, wins: 5, draws: 3, losses: 2, goalsFor: 18, goalsAgainst: 14 },
+                { teamId: 3, points: 17, wins: 5, draws: 2, losses: 3, goalsFor: 17, goalsAgainst: 15 },
+                { teamId: 8, points: 16, wins: 4, draws: 4, losses: 2, goalsFor: 16, goalsAgainst: 14 },
+                { teamId: 11, points: 15, wins: 4, draws: 3, losses: 3, goalsFor: 15, goalsAgainst: 15 },
+                { teamId: 4, points: 14, wins: 4, draws: 2, losses: 4, goalsFor: 14, goalsAgainst: 16 },
+                { teamId: 7, points: 13, wins: 3, draws: 4, losses: 3, goalsFor: 13, goalsAgainst: 13 },
+                { teamId: 12, points: 11, wins: 3, draws: 2, losses: 5, goalsFor: 11, goalsAgainst: 17 },
+                { teamId: 6, points: 10, wins: 2, draws: 4, losses: 4, goalsFor: 10, goalsAgainst: 18 },
+                { teamId: 13, points: 8, wins: 2, draws: 2, losses: 6, goalsFor: 8, goalsAgainst: 20 },
+                { teamId: 14, points: 6, wins: 1, draws: 3, losses: 6, goalsFor: 6, goalsAgainst: 22 },
+            ]
+        };
+
+        // Générer des joueurs pour les autres équipes (3 à 14)
+        function generatePlayersForOtherTeams() {
+            const positions = ['Gardien', 'Défenseur', 'Milieu', 'Attaquant'];
+            const firstNames = ['Pape', 'Moussa', 'Cheikh', 'Ibrahima', 'Ousmane', 'Aliou', 'Mamadou', 'Abdou', 'Samba', 'Modou', 'Serigne', 'Khadim', 'Malick', 'Babacar'];
+            const lastNames = ['Diop', 'Fall', 'Sow', 'Ndiaye', 'Diallo', 'Gueye', 'Mbaye', 'Faye', 'Cissé', 'Ba', 'Kane', 'Sy', 'Touré', 'Sarr'];
+            
+            for (let teamId = 3; teamId <= 14; teamId++) {
+                const team = appData.teams.find(t => t.id === teamId);
+                const playerCount = teamId <= 2 ? 0 : 14; // On a déjà les joueurs pour les équipes 1 et 2
+                
+                for (let i = 1; i <= playerCount; i++) {
+                    const playerId = teamId * 100 + i;
+                    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                    const position = positions[Math.floor(Math.random() * positions.length)];
+                    const age = 18 + Math.floor(Math.random() * 15);
+                    
+                    // Statistiques selon la position
+                    let goals = 0, assists = 0, cleanSheets = 0, saves = 0;
+                    
+                    if (position === 'Attaquant') {
+                        goals = Math.floor(Math.random() * 15) + 3;
+                        assists = Math.floor(Math.random() * 8) + 1;
+                    } else if (position === 'Milieu') {
+                        goals = Math.floor(Math.random() * 8) + 1;
+                        assists = Math.floor(Math.random() * 10) + 2;
+                    } else if (position === 'Défenseur') {
+                        goals = Math.floor(Math.random() * 3);
+                        assists = Math.floor(Math.random() * 5);
+                    } else if (position === 'Gardien') {
+                        cleanSheets = Math.floor(Math.random() * 8) + 2;
+                        saves = Math.floor(Math.random() * 60) + 20;
+                    }
+                    
+                    const yellowCards = Math.floor(Math.random() * 6);
+                    const redCards = Math.floor(Math.random() * 2);
+                    
+                    appData.players.push({
+                        id: playerId,
+                        name: `${firstName} ${lastName}`,
+                        teamId: teamId,
+                        position: position,
+                        age: age,
+                        number: i,
+                        goals: goals,
+                        assists: assists,
+                        cleanSheets: cleanSheets,
+                        saves: saves,
+                        yellowCards: yellowCards,
+                        redCards: redCards,
+                        photo: `https://via.placeholder.com/150/${team.color.substring(1)}/0a0a1a?text=${firstName.charAt(0)}${lastName.charAt(0)}`,
+                        nationality: 'Sénégal',
+                        height: `${175 + Math.floor(Math.random() * 20)}cm`,
+                        weight: `${70 + Math.floor(Math.random() * 20)}kg`,
+                        value: `${Math.floor(Math.random() * 20) + 5}M€`
+                    });
+                }
+            }
+        }
+
+        // Générer les joueurs manquants
+        generatePlayersForOtherTeams();
+
+        // Fonctions utilitaires
+        function getTeamById(id) {
+            return appData.teams.find(team => team.id === id);
+        }
+
+        function getPlayerById(id) {
+            return appData.players.find(player => player.id === id);
+        }
+
+        function getPlayersByTeamId(teamId) {
+            return appData.players.filter(player => player.teamId === teamId);
+        }
+
+        function getCompetitionById(id) {
+            return appData.competitions.find(comp => comp.id === id);
+        }
+
+        // Gestion de l'authentification
+        let currentUser = null;
+
+        // Stockage local pour les images personnalisées
+        const customImages = JSON.parse(localStorage.getItem('futaball_custom_images')) || {};
+
+        // Initialisation de l'application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser le formulaire de connexion
+            initLogin();
+            
+            // Gestionnaire pour le bouton menu mobile
+            document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+                document.getElementById('navLinks').classList.toggle('active');
+            });
+            
+            // Fermer le modal
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('playerModal').style.display = 'none';
+            });
+            
+            // Fermer le modal en cliquant à l'extérieur
+            document.getElementById('playerModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+            
+            // Bouton retour aux équipes
+            document.getElementById('backToTeams').addEventListener('click', function() {
+                document.getElementById('teamDetailSection').style.display = 'none';
+                document.getElementById('teamsContainer').style.display = 'grid';
+            });
+            
+            // Gestionnaire pour le dropdown du profil
+            document.getElementById('userProfile').addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.getElementById('dropdownMenu').classList.toggle('active');
+            });
+            
+            // Fermer le dropdown en cliquant ailleurs
+            document.addEventListener('click', function() {
+                document.getElementById('dropdownMenu').classList.remove('active');
+            });
+            
+            // Gestionnaire pour le formulaire d'upload
+            document.getElementById('uploadForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleImageUpload();
+            });
+        });
+
+        // Initialisation de la connexion
+        function initLogin() {
+            const loginForm = document.getElementById('loginForm');
+            const registerLink = document.getElementById('registerLink');
+            const registerForm = document.getElementById('registerForm');
+            const loginLink = document.getElementById('loginLink');
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // Validation simple
+                let userData = null;
+                
+                if (username === 'admin' && password === 'admin123') {
+                    userData = {
+                        id: 1,
+                        username: 'admin',
+                        name: 'Administrateur FUTABALL',
+                        email: 'admin@futaball.com',
+                        role: 'Administrateur',
+                        joinDate: '2023-01-01',
+                        favoriteTeam: 'Legal Hakoundé',
+                        matchesFollowed: 42,
+                        teamsFollowed: 8,
+                        daysActive: 365,
+                        notifications: 12,
+                        avatar: 'https://via.placeholder.com/150/00d4ff/0a0a1a?text=A'
+                    };
+                } else if (username === 'user' && password === 'user123') {
+                    userData = {
+                        id: 2,
+                        username: 'user',
+                        name: 'Fan de Football',
+                        email: 'user@futaball.com',
+                        role: 'Membre Premium',
+                        joinDate: '2023-06-15',
+                        favoriteTeam: 'Daandee Leniol',
+                        matchesFollowed: 28,
+                        teamsFollowed: 5,
+                        daysActive: 180,
+                        notifications: 5,
+                        avatar: 'https://via.placeholder.com/150/6c00ff/0a0a1a?text=U'
+                    };
+                } else if (username.trim() !== '' && password.trim() !== '') {
+                    // Créer un utilisateur basique
+                    userData = {
+                        id: Date.now(),
+                        username: username,
+                        name: username.charAt(0).toUpperCase() + username.slice(1),
+                        email: `${username}@futaball.com`,
+                        role: 'Membre',
+                        joinDate: new Date().toISOString().split('T')[0],
+                        favoriteTeam: 'Legal Hakoundé',
+                        matchesFollowed: Math.floor(Math.random() * 20),
+                        teamsFollowed: Math.floor(Math.random() * 5) + 1,
+                        daysActive: Math.floor(Math.random() * 30) + 1,
+                        notifications: Math.floor(Math.random() * 10),
+                        avatar: `https://via.placeholder.com/150/00d4ff/0a0a1a?text=${username.charAt(0).toUpperCase()}`
+                    };
+                }
+                
+                if (userData) {
+                    // Connexion réussie
+                    currentUser = userData;
+                    
+                    // Sauvegarder l'utilisateur dans le localStorage
+                    localStorage.setItem('futaball_current_user', JSON.stringify(currentUser));
+                    
+                    // Afficher l'application et cacher la page de connexion
+                    document.getElementById('loginContainer').style.display = 'none';
+                    document.getElementById('appContainer').style.display = 'block';
+                    
+                    // Initialiser l'application
+                    initApp();
+                    
+                } else {
+                    alert('Identifiants incorrects. Utilisez: admin/admin123 ou user/user123');
+                }
+            });
+            
+            // Lien d'inscription (simulé)
+            registerLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('loginFormWrapper').style.display = 'none';
+                document.getElementById('registerFormWrapper').style.display = 'block';
+            });
+            loginLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('registerFormWrapper').style.display = 'none';
+                document.getElementById('loginFormWrapper').style.display = 'block';
+            });
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Récupérer les valeurs
+                const username = document.getElementById('reg_username').value.trim();
+                const email = document.getElementById('reg_email').value.trim();
+                const password = document.getElementById('reg_password').value;
+                const password2 = document.getElementById('reg_password2').value;
+                const errorDiv = document.getElementById('registerError');
+                errorDiv.style.display = 'none';
+                // Validation
+                if (!username || !email || !password || !password2) {
+                    errorDiv.textContent = "Tous les champs sont obligatoires.";
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
+                    errorDiv.textContent = "Email invalide.";
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                if (password.length < 6) {
+                    errorDiv.textContent = "Le mot de passe doit contenir au moins 6 caractères.";
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                if (password !== password2) {
+                    errorDiv.textContent = "Les mots de passe ne correspondent pas.";
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                // Créer l'utilisateur
+                const userData = {
+                    id: Date.now(),
+                    username: username,
+                    name: username.charAt(0).toUpperCase() + username.slice(1),
+                    email: email,
+                    role: 'Membre',
+                    joinDate: new Date().toISOString().split('T')[0],
+                    favoriteTeam: 'Legal Hakoundé',
+                    matchesFollowed: Math.floor(Math.random() * 20),
+                    teamsFollowed: Math.floor(Math.random() * 5) + 1,
+                    daysActive: 1,
+                    notifications: 0,
+                    avatar: `https://via.placeholder.com/150/e53935/fff?text=${username.charAt(0).toUpperCase()}`
+                };
+                currentUser = userData;
+                localStorage.setItem('futaball_current_user', JSON.stringify(currentUser));
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'block';
+                initApp();
+            });
+            
+            // Vérifier si un utilisateur est déjà connecté
+            const savedUser = localStorage.getItem('futaball_current_user');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    document.getElementById('loginContainer').style.display = 'none';
+                    document.getElementById('appContainer').style.display = 'block';
+                    initApp();
+                } catch (e) {
+                    localStorage.removeItem('futaball_current_user');
+                }
+            }
+        }
+
+        // Initialisation de l'application
+        function initApp() {
+            // Mettre à jour le profil utilisateur
+            updateUserProfile();
+            
+            // Initialiser les éléments d'interface
+            initNavigation();
+            initCompetitionFilters();
+            initMatchFilters();
+            renderHomeContent();
+            renderFeaturedPlayer();
+            
+            // Initialiser la déconnexion
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                currentUser = null;
+                localStorage.removeItem('futaball_current_user');
+                document.getElementById('appContainer').style.display = 'none';
+                document.getElementById('loginContainer').style.display = 'flex';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            });
+            
+            // Ajouter des écouteurs d'événements aux liens du dropdown
+            document.querySelectorAll('.dropdown-menu a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('data-section')) {
+                        e.preventDefault();
+                        document.getElementById('dropdownMenu').classList.remove('active');
+                        const sectionId = this.getAttribute('data-section');
+                        showSection(sectionId);
+                    }
+                });
+            });
+        }
+
+        // Mettre à jour le profil utilisateur
+        function updateUserProfile() {
+            if (!currentUser) return;
+            
+            // Mettre à jour l'avatar
+            const userAvatar = document.getElementById('userAvatar');
+            const dropdownAvatar = document.getElementById('dropdownAvatar');
+            const avatarUrl = customImages[`user-${currentUser.id}`] || currentUser.avatar;
+            
+            userAvatar.innerHTML = `<img src="${avatarUrl}" alt="${currentUser.name}">`;
+            dropdownAvatar.innerHTML = `<img src="${avatarUrl}" alt="${currentUser.name}">`;
+            
+            // Mettre à jour les informations textuelles
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = currentUser.role;
+            document.getElementById('dropdownUserName').textContent = currentUser.name;
+            document.getElementById('dropdownUserEmail').textContent = currentUser.email;
+            
+            // Mettre à jour la page de profil
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileRole').textContent = currentUser.role;
+            document.getElementById('profileJoinDate').textContent = currentUser.joinDate;
+            document.getElementById('profileFavoriteTeam').textContent = currentUser.favoriteTeam;
+            document.getElementById('profileMatches').textContent = currentUser.matchesFollowed;
+            document.getElementById('profileTeams').textContent = currentUser.teamsFollowed;
+            document.getElementById('profileDays').textContent = currentUser.daysActive;
+            document.getElementById('profileNotifications').textContent = currentUser.notifications;
+            
+            // Mettre à jour l'image de profil
+            const profileImageContainer = document.getElementById('profileImageContainer');
+            profileImageContainer.innerHTML = `<img src="${avatarUrl}" alt="${currentUser.name}" style="width:100%;height:100%;object-fit:cover;">`;
+        }
+
+        // Navigation entre les sections
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Masquer le menu mobile si ouvert
+                    document.getElementById('navLinks').classList.remove('active');
+                    
+                    // Mettre à jour le lien actif
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Afficher la section correspondante
+                    const sectionId = this.getAttribute('data-section');
+                    showSection(sectionId);
+                });
+            });
+        }
+
+        // Afficher une section spécifique
+        function showSection(sectionId) {
+            // Masquer toutes les sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Afficher la section demandée
+            document.getElementById(`${sectionId}-section`).classList.add('active');
+            
+            // Recharger le contenu si nécessaire
+            switch(sectionId) {
+                case 'accueil':
+                    renderHomeContent();
+                    break;
+                case 'matches':
+                    renderAllMatches();
+                    break;
+                case 'classements':
+                    renderRankings();
+                    break;
+                case 'equipes':
+                    renderTeams();
+                    break;
+                case 'actualites':
+                    renderAllNews();
+                    break;
+                case 'profile':
+                    updateUserProfile();
+                    break;
+                case 'upload':
+                    // Rien à faire
+                    break;
+            }
+        }
+
+        // Filtres de compétition
+        function initCompetitionFilters() {
+            const competitionItems = document.querySelectorAll('.competition-item');
+            
+            competitionItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Mettre à jour l'élément actif
+                    competitionItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filtrer les matchs par compétition
+                    const competition = this.getAttribute('data-competition');
+                    filterMatchesByCompetition(competition);
+                });
+            });
+        }
+
+        // Filtres de matchs
+        function initMatchFilters() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Mettre à jour le bouton actif
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filtrer les matchs par statut
+                    const filter = this.getAttribute('data-filter');
+                    filterMatchesByStatus(filter);
+                });
+            });
+        }
+
+        // Gérer l'upload d'images
+        function handleImageUpload() {
+            const imageType = document.getElementById('imageType').value;
+            const elementId = document.getElementById('elementId').value;
+            const imageUrl = document.getElementById('imageUrl').value;
+            
+            if (!imageType || !elementId || !imageUrl) {
+                showUploadStatus('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+            
+            // Valider l'URL de l'image
+            if (!isValidImageUrl(imageUrl)) {
+                showUploadStatus('URL d\'image invalide. Utilisez une URL commençant par http:// ou https://', 'error');
+                return;
+            }
+            
+            // Sauvegarder l'image dans le stockage local
+            const key = `${imageType}-${elementId}`;
+            customImages[key] = imageUrl;
+            localStorage.setItem('futaball_custom_images', JSON.stringify(customImages));
+            
+            showUploadStatus('Image sauvegardée avec succès! Rechargez la page pour voir les changements.', 'success');
+            
+            // Réinitialiser le formulaire
+            document.getElementById('uploadForm').reset();
+            
+            // Mettre à jour l'affichage si l'image concerne l'utilisateur actuel
+            if (imageType === 'user-avatar' && elementId === `user-${currentUser?.id}`) {
+                updateUserProfile();
+            }
+        }
+
+        // Valider une URL d'image
+        function isValidImageUrl(url) {
+            try {
+                const parsedUrl = new URL(url);
+                return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+            } catch {
+                return false;
+            }
+        }
+
+        // Afficher le statut de l'upload
+        function showUploadStatus(message, type) {
+            const statusDiv = document.getElementById('uploadStatus');
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = type === 'success' ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 51, 102, 0.1)';
+            statusDiv.style.border = type === 'success' ? '1px solid var(--success-color)' : '1px solid var(--danger-color)';
+            statusDiv.style.color = type === 'success' ? 'var(--success-color)' : 'var(--danger-color)';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Obtenir une image personnalisée ou utiliser celle par défaut
+        function getCustomImage(type, id, defaultImage) {
+            const key = `${type}-${id}`;
+            return customImages[key] || defaultImage;
+        }
+
+        // Afficher le joueur en vedette
+        function renderFeaturedPlayer() {
+            const container = document.getElementById('featuredPlayer');
+            if (!container) return;
+            
+            // Prendre le meilleur buteur
+            const topScorer = appData.topScorers[0];
+            const player = getPlayerById(topScorer.playerId);
+            const team = getTeamById(player.teamId);
+            
+            // Obtenir l'image personnalisée
+            const playerImage = getCustomImage('player-photo', `player-${player.id}`, player.photo);
+            
+            container.innerHTML = `
+                <div class="player-rank">★</div>
+                <div class="player-info">
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-stats">${team.name} | ${player.position}</div>
+                </div>
+                <div class="player-stats">${player.goals || 0} buts</div>
+                <div class="player-photo">
+                    <img src="${playerImage}" alt="${player.name}">
+                </div>
+            `;
+            
+            container.addEventListener('click', () => showPlayerModal(player.id));
+        }
+
+        // Afficher le contenu de la page d'accueil
+        function renderHomeContent() {
+            renderLiveMatches();
+            renderNews();
+        }
+
+        // Afficher les matchs en direct
+        function renderLiveMatches() {
+            const container = document.getElementById('liveMatchesContainer');
+            if (!container) return;
+            
+            // Filtrer les matchs en direct
+            const liveMatches = appData.matches.filter(match => match.status === 'live');
+            
+            container.innerHTML = '';
+            
+            if (liveMatches.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 2rem; background: var(--card-bg); border-radius: var(--border-radius);">Aucun match en direct pour le moment. Les prochains matchs commenceront bientôt.</p>';
+                return;
+            }
+            
+            liveMatches.forEach(match => {
+                const homeTeam = getTeamById(match.homeTeamId);
+                const awayTeam = getTeamById(match.awayTeamId);
+                const competition = getCompetitionById(match.competition);
+                
+                // Obtenir les images personnalisées
+                const homeLogo = getCustomImage('team-logo', `team-${homeTeam.id}`, homeTeam.logo);
+                const awayLogo = getCustomImage('team-logo', `team-${awayTeam.id}`, awayTeam.logo);
+                
+                const matchElement = document.createElement('div');
+                matchElement.className = 'match-card live';
+                matchElement.innerHTML = `
+                    <div class="match-header">
+                        <span class="match-competition">${competition ? competition.name : 'Compétition'}</span>
+                        <span class="match-minute">${match.minute}'</span>
+                    </div>
+                    <div class="match-teams">
+                        <div class="team">
+                            <div class="team-logo">
+                                <img src="${homeLogo}" alt="${homeTeam.name}">
+                            </div>
+                            <div class="team-name">${homeTeam.name}</div>
+                        </div>
+                        <div class="match-score">${match.homeScore} - ${match.awayScore}</div>
+                        <div class="team">
+                            <div class="team-logo">
+                                <img src="${awayLogo}" alt="${awayTeam.name}">
+                            </div>
+                            <div class="team-name">${awayTeam.name}</div>
+                        </div>
+                    </div>
+                    <div class="match-time">${match.date} | ${match.time}</div>
+                `;
+                
+                container.appendChild(matchElement);
+            });
+        }
+
+        // Afficher les actualités
+        function renderNews() {
+            const container = document.getElementById('newsContainer');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Afficher seulement 3 actualités sur la page d'accueil
+            const newsToShow = appData.news.slice(0, 3);
+            
+            newsToShow.forEach(news => {
+                // Obtenir l'image personnalisée
+                const newsImage = getCustomImage('news-image', `news-${news.id}`, news.image);
+                
+                const newsElement = document.createElement('div');
+                newsElement.className = 'news-card';
+                newsElement.innerHTML = `
+                    <div class="news-image">
+                        <img src="${newsImage}" alt="${news.title}">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-title">${news.title}</div>
+                        <div class="news-excerpt">${news.excerpt}</div>
+                        <div class="news-date">${news.date} | ${news.category}</div>
+                    </div>
+                `;
+                
+                container.appendChild(newsElement);
+            });
+        }
+
+        // Afficher tous les matchs
+        function renderAllMatches() {
+            const container = document.getElementById('allMatchesContainer');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            appData.matches.forEach(match => {
+                const homeTeam = getTeamById(match.homeTeamId);
+                const awayTeam = getTeamById(match.awayTeamId);
+                const competition = getCompetitionById(match.competition);
+                
+                // Obtenir les images personnalisées
+                const homeLogo = getCustomImage('team-logo', `team-${homeTeam.id}`, homeTeam.logo);
+                const awayLogo = getCustomImage('team-logo', `team-${awayTeam.id}`, awayTeam.logo);
+                
+                const matchElement = document.createElement('div');
+                matchElement.className = `match-card ${match.status}`;
+                
+                let statusBadge = '';
+                if (match.status === 'live') {
+                    statusBadge = '<div class="live-badge">EN DIRECT</div>';
+                } else if (match.status === 'upcoming') {
+                    statusBadge = '<div class="upcoming-badge">À VENIR</div>';
+                } else if (match.status === 'finished') {
+                    statusBadge = '<div class="finished-badge">TERMINÉ</div>';
+                }
+                
+                matchElement.innerHTML = `
+                    ${statusBadge}
+                    <div class="match-header">
+                        <span class="match-competition">${competition ? competition.name : 'Compétition'}</span>
+                        <span class="match-status">${match.status === 'live' ? match.minute + "'" : match.status}</span>
+                    </div>
+                    <div class="match-teams">
+                        <div class="team">
+                            <div class="team-logo">
+                                <img src="${homeLogo}" alt="${homeTeam.name}">
+                            </div>
+                            <div class="team-name">${homeTeam.name}</div>
+                        </div>
+                        <div class="match-score">${match.homeScore} - ${match.awayScore}</div>
+                        <div class="team">
+                            <div class="team-logo">
+                                <img src="${awayLogo}" alt="${awayTeam.name}">
+                            </div>
+                            <div class="team-name">${awayTeam.name}</div>
+                        </div>
+                    </div>
+                    <div class="match-time">${match.date} | ${match.time}</div>
+                `;
+                
+                container.appendChild(matchElement);
+            });
+        }
+
+        // Afficher les classements
+        function renderRankings() {
+            renderTopScorers();
+            renderTopGoalkeepers();
+            renderCardsLeaders();
+            renderTeamRankings();
+        }
+
+        // Afficher les meilleurs buteurs
+        function renderTopScorers() {
+            const container = document.getElementById('topScorersList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            appData.topScorers.forEach((item, index) => {
+                const player = getPlayerById(item.playerId);
+                if (!player) return;
+                
+                const team = getTeamById(player.teamId);
+                
+                // Obtenir l'image personnalisée
+                const playerImage = getCustomImage('player-photo', `player-${player.id}`, player.photo);
+                
+                const playerElement = document.createElement('div');
+                playerElement.className = 'player-item';
+                playerElement.setAttribute('data-player-id', player.id);
+                playerElement.innerHTML = `
+                    <div class="player-rank">${index + 1}</div>
+                    <div class="player-info">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-stats">${team.name} | ${player.position}</div>
+                    </div>
+                    <div class="player-stats">${item.goals} buts, ${item.assists} passes</div>
+                    <div class="player-photo">
+                        <img src="${playerImage}" alt="${player.name}">
+                    </div>
+                `;
+                
+                playerElement.addEventListener('click', () => showPlayerModal(player.id));
+                container.appendChild(playerElement);
+            });
+        }
+
+        // Afficher les meilleurs gardiens
+        function renderTopGoalkeepers() {
+            const container = document.getElementById('topGoalkeepersList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            appData.topGoalkeepers.forEach((item, index) => {
+                const player = getPlayerById(item.playerId);
+                if (!player) return;
+                
+                const team = getTeamById(player.teamId);
+                
+                // Obtenir l'image personnalisée
+                const playerImage = getCustomImage('player-photo', `player-${player.id}`, player.photo);
+                
+                const playerElement = document.createElement('div');
+                playerElement.className = 'player-item';
+                playerElement.setAttribute('data-player-id', player.id);
+                playerElement.innerHTML = `
+                    <div class="player-rank">${index + 1}</div>
+                    <div class="player-info">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-stats">${team.name}</div>
+                    </div>
+                    <div class="player-stats">${item.cleanSheets} clean sheets, ${item.saves} arrêts</div>
+                    <div class="player-photo">
+                        <img src="${playerImage}" alt="${player.name}">
+                    </div>
+                `;
+                
+                playerElement.addEventListener('click', () => showPlayerModal(player.id));
+                container.appendChild(playerElement);
+            });
+        }
+
+        // Afficher les leaders de cartons
+        function renderCardsLeaders() {
+            const container = document.getElementById('cardsList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            appData.cardsLeaders.forEach((item, index) => {
+                const player = getPlayerById(item.playerId);
+                if (!player) return;
+                
+                const team = getTeamById(player.teamId);
+                
+                // Obtenir l'image personnalisée
+                const playerImage = getCustomImage('player-photo', `player-${player.id}`, player.photo);
+                
+                const playerElement = document.createElement('div');
+                playerElement.className = 'player-item';
+                playerElement.setAttribute('data-player-id', player.id);
+                playerElement.innerHTML = `
+                    <div class="player-rank">${index + 1}</div>
+                    <div class="player-info">
+                        <div class="player-name">${player.name}</div>
+                        <div class="player-stats">${team.name} | ${player.position}</div>
+                    </div>
+                    <div class="player-stats">${item.yellowCards}🟡 ${item.redCards}🟥</div>
+                    <div class="player-photo">
+                        <img src="${playerImage}" alt="${player.name}">
+                    </div>
+                `;
+                
+                playerElement.addEventListener('click', () => showPlayerModal(player.id));
+                container.appendChild(playerElement);
+            });
+        }
+
+        // Afficher le classement des équipes
+        function renderTeamRankings() {
+            const container = document.getElementById('teamRankingList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            appData.teamRankings.forEach((ranking, index) => {
+                const team = getTeamById(ranking.teamId);
+                
+                // Obtenir l'image personnalisée
+                const teamLogo = getCustomImage('team-logo', `team-${team.id}`, team.logo);
+                
+                const teamElement = document.createElement('div');
+                teamElement.className = 'team-item';
+                teamElement.innerHTML = `
+                    <div class="team-rank">${index + 1}</div>
+                    <div class="team-info">
+                        <div class="team-name">${team.name}</div>
+                        <div class="team-stats">${ranking.wins}V ${ranking.draws}N ${ranking.losses}D</div>
+                    </div>
+                    <div class="team-stats">${ranking.points} pts</div>
+                    <div class="team-logo-small">
+                        <img src="${teamLogo}" alt="${team.name}">
+                    </div>
+                `;
+                
+                container.appendChild(teamElement);
+            });
+        }
+
+        // Afficher les équipes
+        function renderTeams() {
+            const container = document.getElementById('teamsContainer');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            appData.teams.forEach(team => {
+                // Compter le nombre de joueurs dans l'équipe
+                const playerCount = getPlayersByTeamId(team.id).length;
+                
+                // Obtenir l'image personnalisée
+                const teamLogo = getCustomImage('team-logo', `team-${team.id}`, team.logo);
+                
+                const teamElement = document.createElement('div');
+                teamElement.className = 'team-card';
+                teamElement.innerHTML = `
+                    <div class="team-card-logo">
+                        <img src="${teamLogo}" alt="${team.name}">
+                    </div>
+                    <div class="team-card-name">${team.name}</div>
+                    <div class="team-card-details">
+                        <div>${team.city}</div>
+                        <div>Entraîneur: ${team.coach}</div>
+                        <div>Joueurs: ${playerCount}</div>
+                        <div>Stade: ${team.stadium}</div>
+                        <div>${team.trophies}</div>
+                    </div>
+                `;
+                
+                teamElement.addEventListener('click', () => showTeamDetails(team.id));
+                container.appendChild(teamElement);
+            });
+        }
+
+        // Afficher les détails d'une équipe
+        function showTeamDetails(teamId) {
+            const team = getTeamById(teamId);
+            const players = getPlayersByTeamId(teamId);
+            
+            // Masquer la liste des équipes
+            document.getElementById('teamsContainer').style.display = 'none';
+            
+            // Afficher la section de détails
+            const detailSection = document.getElementById('teamDetailSection');
+            detailSection.style.display = 'block';
+            
+            // Remplir les détails de l'équipe
+            const detailContent = document.getElementById('teamDetailContent');
+            
+            // Obtenir l'image personnalisée
+            const teamLogo = getCustomImage('team-logo', `team-${team.id}`, team.logo);
+            
+            let playersHtml = '';
+            players.forEach(player => {
+                let stats = '';
+                if (player.position === 'Gardien') {
+                    stats = `${player.cleanSheets || 0} clean sheets, ${player.saves || 0} arrêts`;
+                } else {
+                    stats = `${player.goals || 0} buts, ${player.assists || 0} passes`;
+                }
+                
+                // Obtenir l'image personnalisée du joueur
+                const playerImage = getCustomImage('player-photo', `player-${player.id}`, player.photo);
+                
+                playersHtml += `
+                    <div class="player-card" data-player-id="${player.id}">
+                        <div class="player-card-photo">
+                            <img src="${playerImage}" alt="${player.name}">
+                        </div>
+                        <div class="player-card-name">${player.name}</div>
+                        <div class="player-card-position">${player.position} - #${player.number}</div>
+                        <div class="player-card-stats">${stats}</div>
+                    </div>
+                `;
+            });
+            
+            detailContent.innerHTML = `
+                <div class="team-detail-header">
+                    <div class="team-detail-logo">
+                        <img src="${teamLogo}" alt="${team.name}">
+                    </div>
+                    <div class="team-detail-info">
+                        <div class="team-detail-name">${team.name}</div>
+                        <p style="margin-bottom: 1rem; color: #aaa;">${team.description}</p>
+                        <div class="team-detail-meta">
+                            <div class="team-detail-meta-item">
+                                <div class="team-detail-meta-label">Ville</div>
+                                <div class="team-detail-meta-value">${team.city}</div>
+                            </div>
+                            <div class="team-detail-meta-item">
+                                <div class="team-detail-meta-label">Entraîneur</div>
+                                <div class="team-detail-meta-value">${team.coach}</div>
+                            </div>
+                            <div class="team-detail-meta-item">
+                                <div class="team-detail-meta-label">Stade</div>
+                                <div class="team-detail-meta-value">${team.stadium}</div>
+                            </div>
+                            <div class="team-detail-meta-item">
+                                <div class="team-detail-meta-label">Capacité</div>
+                                <div class="team-detail-meta-value">${team.capacity.toLocaleString()}</div>
+                            </div>
+                            <div class="team-detail-meta-item">
+                                <div class="team-detail-meta-label">Fondation</div>
+                                <div class="team-detail-meta-value">${team.founded}</div>
+                            </div>
+                            <div class="team-detail-meta-item">
+                                <div class="team-detail-meta-label">Palmarès</div>
+                                <div class="team-detail-meta-value">${team.trophies}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="section-title"><i class="fas fa-users"></i> Effectif (${players.length} joueurs)</h2>
+                <div class="players-container">
+                    ${playersHtml}
+                </div>
+            `;
+            
+            // Ajouter des événements aux cartes des joueurs
+            document.querySelectorAll('.player-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const playerId = parseInt(this.getAttribute('data-player-id'));
+                    showPlayerModal(playerId);
+                });
+            });
+        }
+
+        // Afficher toutes les actualités
+        function renderAllNews() {
+            const container = document.getElementById('allNewsContainer');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            appData.news.forEach(news => {
+                // Obtenir l'image personnalisée
+                const newsImage = getCustomImage('news-image', `news-${news.id}`, news.image);
+                
+                const newsElement = document.createElement('div');
+                newsElement.className = 'news-card';
+                newsElement.innerHTML = `
+                    <div class="news-image">
+                        <img src="${newsImage}" alt="${news.title}">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-title">${news.title}</div>
+                        <div class="news-excerpt">${news.excerpt}</div>
+                        <div class="news-date">${news.date} | ${news.category}</div>
+                    </div>
+                `;
+                
+                container.appendChild(newsElement);
+            });
+        }
+
+        // Filtrer les matchs par compétition
+        function filterMatchesByCompetition(competitionId) {
+            const container = document.getElementById('allMatchesContainer');
+            if (!container) return;
+            let matches = appData.matches;
+            if (competitionId !== 'all') {
+                matches = matches.filter(m => m.competition === competitionId);
+            }
+            container.innerHTML = '';
+            matches.forEach(match => {
+                const homeTeam = getTeamById(match.homeTeamId);
+                const awayTeam = getTeamById(match.awayTeamId);
+                const competition = getCompetitionById(match.competition);
+                const homeLogo = getCustomImage('team-logo', `team-${homeTeam.id}`, homeTeam.logo);
+                const awayLogo = getCustomImage('team-logo', `team-${awayTeam.id}`, awayTeam.logo);
+                const matchElement = document.createElement('div');
+                matchElement.className = `match-card ${match.status}`;
+                let statusBadge = '';
+                if (match.status === 'live') statusBadge = '<div class="live-badge">EN DIRECT</div>';
+                else if (match.status === 'upcoming') statusBadge = '<div class="upcoming-badge">À VENIR</div>';
+                else if (match.status === 'finished') statusBadge = '<div class="finished-badge">TERMINÉ</div>';
+                matchElement.innerHTML = `
+                    ${statusBadge}
+                    <div class="match-header">
+                        <span class="match-competition">${competition ? competition.name : 'Compétition'}</span>
+                        <span class="match-status">${match.status === 'live' ? match.minute + "'" : match.status}</span>
+                    </div>
+                    <div class="match-teams">
+                        <div class="team">
+                            <div class="team-logo">
+                                <img src="${homeLogo}" alt="${homeTeam.name}">
+                            </div>
+                            <div class="team-name">${homeTeam.name}</div>
+                        </div>
+                        <div class="match-score">${match.homeScore} - ${match.awayScore}</div>
+                        <div class="team">
+                            <div class="team-logo">
+                                <img src="${awayLogo}" alt="${awayTeam.name}">
+                            </div>
+                            <div class="team-name">${awayTeam.name}</div>
+                        </div>
+                    </div>
+                    <div class="match-time">${match.date} | ${match.time}</div>
+                `;
+                container.appendChild(matchElement);
+            });
+        }
+
+        // Filtrer les matchs par statut
+        function filterMatchesByStatus(status) {
+            const container = document.getElementById('allMatchesContainer');
+            if (!container) return;
+            let matches = appData.matches;
+            if (status !== 'all') {
+                matches = matches.filter(m => m.status === status);
+            }
+            container.innerHTML = '';
+            matches.forEach(match => {
+                const homeTeam = getTeamById(match.homeTeamId);
+                const awayTeam = getTeamById(match.awayTeamId);
+                const competition = getCompetitionById(match.competition);
+                const homeLogo = getCustomImage('team-logo', `team-${homeTeam.id}`, homeTeam.logo);
+                const awayLogo = getCustomImage('team-logo', `team-${awayTeam.id}`, awayTeam.logo);
+                const matchElement = document.createElement('div');
+                matchElement.className = `match-card ${match.status}`;
+                let statusBadge = '';
+                if (match.status === 'live') statusBadge = '<div class="live-badge">EN DIRECT</div>';
+                else if (match.status === 'upcoming') statusBadge = '<div class="upcoming-badge">À VENIR</div>';
+                else if (match.status === 'finished') statusBadge = '<div class="finished-badge">TERMINÉ</div>';
+                matchElement.innerHTML = `
+                    ${statusBadge}
+                    <div class="match-header">
+                        <span class="match-competition">${competition ? competition.name : 'Compétition'}</span>
+                        <span class="match-status">${match.status === 'live' ? match.minute + "'" : match.status}</span>
+                    </div>
+                    <div class="match-teams">
+                        <div class="team">
+                            <div class="team-logo">
+                                <img src="${homeLogo}" alt="${homeTeam.name}">
+                            </div>
+                            <div class="team-name">${homeTeam.name}</div>
+                        </div>
+                        <div class="match-score">${match.homeScore} - ${match.awayScore}</div>
+                        <div class="team">
+                            <div class="team-logo">
+                                <img src="${awayLogo}" alt="${awayTeam.name}">
+                            </div>
+                            <div class="team-name">${awayTeam.name}</div>
+                        </div>
+                    </div>
+                    <div class="match-time">${match.date} | ${match.time}</div>
+                `;
+                container.appendChild(matchElement);
+            });
+        }
+
+        // Ajout : Affichage des actualités dans la section "Actualités"
+        function renderAllNews() {
+            const container = document.getElementById('allNewsContainer');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            appData.news.forEach(news => {
+                // Obtenir l'image personnalisée
+                const newsImage = getCustomImage('news-image', `news-${news.id}`, news.image);
+                
+                const newsElement = document.createElement('div');
+                newsElement.className = 'news-card';
+                newsElement.innerHTML = `
+                    <div class="news-image">
+                        <img src="${newsImage}" alt="${news.title}">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-title">${news.title}</div>
+                        <div class="news-excerpt">${news.excerpt}</div>
+                        <div class="news-date">${news.date} | ${news.category}</div>
+                    </div>
+                `;
+                
+                container.appendChild(newsElement);
+            });
+        }
+
+        // Simuler des mises à jour en temps réel
+        function simulateLiveUpdates() {
+            // Mettre à jour les minutes des matchs en direct
+            setInterval(() => {
+                const liveMatches = appData.matches.filter(match => match.status === 'live');
+                
+                liveMatches.forEach(match => {
+                    // Augmenter la minute du match
+                    if (match.minute < 90) {
+                        match.minute = String(parseInt(match.minute) + 1);
+                        
+                        // Simuler occasionnellement un but
+                        if (Math.random() < 0.05) {
+                            if (Math.random() < 0.5) {
+                                match.homeScore += 1;
+                            } else {
+                                match.awayScore += 1;
+                            }
+                        }
+                    } else {
+                        // Terminer le match après 90 minutes
+                        match.status = 'finished';
+                        match.time = 'Terminé';
+                    }
+                });
+                
+                // Rafraîchir l'affichage si nous sommes sur la page des matchs
+                if (document.getElementById('matches-section').classList.contains('active')) {
+                    renderAllMatches();
+                }
+                
+                // Rafraîchir l'affichage si nous sommes sur la page d'accueil
+                if (document.getElementById('accueil-section').classList.contains('active')) {
+                    renderLiveMatches();
+                }
+                
+            }, 5000); // Mise à jour toutes les 5 secondes
+        }
+
+        // Démarrer les mises à jour en temps réel
+        simulateLiveUpdates();
+
+        // Ajout : bouton de changement de thème
+        document.addEventListener('DOMContentLoaded', function() {
+            // ...existing code...
+            const themeBtn = document.getElementById('themeToggleBtn');
+            themeBtn.addEventListener('click', function() {
+                const body = document.body;
+                if (body.classList.contains('theme-red')) {
+                    body.classList.remove('theme-red');
+                    body.classList.add('theme-blue');
+                    themeBtn.textContent = 'Thème Rouge';
+                } else {
+                    body.classList.remove('theme-blue');
+                    body.classList.add('theme-red');
+                    themeBtn.textContent = 'Thème Bleu';
+                }
+            });
+        });
+
+        // Ajout : rendre toutes les images importantes cliquables
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Logo principal cliquable (retour accueil)
+            document.querySelectorAll('.logo').forEach(logo => {
+                logo.style.cursor = 'pointer';
+                logo.addEventListener('click', function() {
+                    showSection('accueil');
+                    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                    document.querySelector('.nav-links a[data-section="accueil"]').classList.add('active');
+                });
+            });
+
+            // 2. Avatar utilisateur cliquable (ouvre profil)
+            document.getElementById('userAvatar').addEventListener('click', function(e) {
+                e.stopPropagation();
+                showSection('profile');
+                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                document.querySelector('.nav-links a[data-section="profile"]')?.classList.add('active');
+                document.getElementById('dropdownMenu').classList.remove('active');
+            });
+
+            // 3. Modal image générique
+            const imageModal = document.getElementById('imageModal');
+            const imageModalImg = document.getElementById('imageModalImg');
+            const imageModalTitle = document.getElementById('imageModalTitle');
+            const imageModalDesc = document.getElementById('imageModalDesc');
+            document.getElementById('closeImageModal').onclick = () => imageModal.style.display = 'none';
+            imageModal.onclick = (e) => { if (e.target === imageModal) imageModal.style.display = 'none'; };
+
+            // 4. Rendre les logos équipes et photos joueurs cliquables (dynamique)
+            // Hook dans les fonctions de rendu
+            const oldRenderTeams = renderTeams;
+            renderTeams = function() {
+                oldRenderTeams();
+                // Logos équipes cliquables
+                document.querySelectorAll('.team-card-logo img').forEach(img => {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const card = img.closest('.team-card');
+                        if (card) card.click();
+                    });
+                });
+            };
+
+            const oldShowTeamDetails = showTeamDetails;
+            showTeamDetails = function(teamId) {
+                oldShowTeamDetails(teamId);
+                // Photos joueurs cliquables
+                document.querySelectorAll('.player-card-photo img').forEach(img => {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const card = img.closest('.player-card');
+                        if (card) card.click();
+                    });
+                });
+                // Logo équipe détail cliquable (ouvre modal image)
+                document.querySelectorAll('.team-detail-logo img').forEach(img => {
+                    img.style.cursor = 'zoom-in';
+                    img.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        imageModalImg.src = img.src;
+                        imageModalTitle.textContent = img.alt;
+                        imageModalDesc.textContent = '';
+                        imageModal.style.display = 'flex';
+                    });
+                });
+            };
+
+            // 5. Rendre les photos joueurs cliquables dans les classements
+            function hookPlayerListImages() {
+                document.querySelectorAll('.player-photo img').forEach(img => {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const card = img.closest('.player-item');
+                        if (card) card.click();
+                    });
+                });
+            }
+            // Hook dans les rendus de stats
+            const oldRenderTopScorers = renderTopScorers;
+            renderTopScorers = function() { oldRenderTopScorers(); hookPlayerListImages(); };
+            const oldRenderTopGoalkeepers = renderTopGoalkeepers;
+            renderTopGoalkeepers = function() { oldRenderTopGoalkeepers(); hookPlayerListImages(); };
+            const oldRenderCardsLeaders = renderCardsLeaders;
+            renderCardsLeaders = function() { oldRenderCardsLeaders(); hookPlayerListImages(); };
+
+            // 6. Rendre les images actualités cliquables (ouvre modal image)
+            function hookNewsImages(containerSelector, newsList) {
+                document.querySelectorAll(containerSelector + ' .news-image img').forEach((img, idx) => {
+                    img.style.cursor = 'zoom-in';
+                    img.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const news = newsList[idx];
+                        imageModalImg.src = img.src;
+                        imageModalTitle.textContent = news.title;
+                        imageModalDesc.textContent = news.excerpt;
+                        imageModal.style.display = 'flex';
+                    });
+                });
+            }
+            // Hook dans renderNews et renderAllNews
+            const oldRenderNews = renderNews;
+            renderNews = function() {
+                oldRenderNews();
+                hookNewsImages('#newsContainer', appData.news.slice(0, 3));
+            };
+            const oldRenderAllNews = renderAllNews;
+            renderAllNews = function() {
+                oldRenderAllNews();
+                hookNewsImages('#allNewsContainer', appData.news);
+            };
+
+            // 7. Rendre la photo du joueur dans le modal cliquable (ouvre image en grand)
+            const oldShowPlayerModal = showPlayerModal;
+            showPlayerModal = function(playerId) {
+                oldShowPlayerModal(playerId);
+                setTimeout(() => {
+                    const img = document.querySelector('#playerModal .player-detail-photo img');
+                    if (img) {
+                        img.style.cursor = 'zoom-in';
+                        img.onclick = function(e) {
+                            e.stopPropagation();
+                            imageModalImg.src = img.src;
+                            imageModalTitle.textContent = img.alt;
+                            imageModalDesc.textContent = '';
+                            imageModal.style.display = 'flex';
+                        };
+                    }
+                }, 10);
+            };
+        });
+    </script>
+</body>
+</html>
