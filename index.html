@@ -832,8 +832,14 @@
         // Gestion de l'authentification
         let currentUser = null;
 
-        // Stockage local pour les images personnalisées
-        const customImages = JSON.parse(localStorage.getItem('futaball_custom_images')) || {};
+        // Stockage local pour les images personnalisées avec gestion d'erreur
+        let customImages = {};
+        try {
+            customImages = JSON.parse(localStorage.getItem('futaball_custom_images')) || {};
+        } catch (error) {
+            console.error('Erreur lors de la lecture du localStorage:', error);
+            customImages = {};
+        }
 
         // Initialisation de l'application
         document.addEventListener('DOMContentLoaded', function() {
@@ -950,7 +956,11 @@
                     currentUser = userData;
                     
                     // Sauvegarder l'utilisateur dans le localStorage
-                    localStorage.setItem('futaball_current_user', JSON.stringify(currentUser));
+                    try {
+                        localStorage.setItem('futaball_current_user', JSON.stringify(currentUser));
+                    } catch (error) {
+                        console.error('Erreur lors de la sauvegarde de l\'utilisateur:', error);
+                    }
                     
                     // Afficher l'application et cacher la page de connexion
                     document.getElementById('loginContainer').style.display = 'none';
@@ -1021,7 +1031,11 @@
                     avatar: `https://via.placeholder.com/150/e53935/fff?text=${username.charAt(0).toUpperCase()}`
                 };
                 currentUser = userData;
-                localStorage.setItem('futaball_current_user', JSON.stringify(currentUser));
+                try {
+                    localStorage.setItem('futaball_current_user', JSON.stringify(currentUser));
+                } catch (error) {
+                    console.error('Erreur lors de la sauvegarde de l\'utilisateur:', error);
+                }
                 document.getElementById('loginContainer').style.display = 'none';
                 document.getElementById('appContainer').style.display = 'block';
                 initApp();
@@ -1222,9 +1236,14 @@
             // Sauvegarder l'image dans le stockage local
             const key = `${imageType}-${elementId}`;
             customImages[key] = imageUrl;
-            localStorage.setItem('futaball_custom_images', JSON.stringify(customImages));
-            
-            showUploadStatus('Image sauvegardée avec succès! Rechargez la page pour voir les changements.', 'success');
+            try {
+                localStorage.setItem('futaball_custom_images', JSON.stringify(customImages));
+                showUploadStatus('Image sauvegardée avec succès! Rechargez la page pour voir les changements.', 'success');
+            } catch (error) {
+                console.error('Erreur lors de la sauvegarde de l\'image:', error);
+                showUploadStatus('Erreur lors de la sauvegarde de l\'image. Le stockage est peut-être plein.', 'error');
+                return;
+            }
             
             // Réinitialiser le formulaire
             document.getElementById('uploadForm').reset();
@@ -1383,6 +1402,55 @@
             });
         }
 
+        // Helper function to create a match element
+        function createMatchElement(match) {
+            const homeTeam = getTeamById(match.homeTeamId);
+            const awayTeam = getTeamById(match.awayTeamId);
+            const competition = getCompetitionById(match.competition);
+            
+            // Obtenir les images personnalisées
+            const homeLogo = getCustomImage('team-logo', `team-${homeTeam.id}`, homeTeam.logo);
+            const awayLogo = getCustomImage('team-logo', `team-${awayTeam.id}`, awayTeam.logo);
+            
+            const matchElement = document.createElement('div');
+            matchElement.className = `match-card ${match.status}`;
+            
+            let statusBadge = '';
+            if (match.status === 'live') {
+                statusBadge = '<div class="live-badge">EN DIRECT</div>';
+            } else if (match.status === 'upcoming') {
+                statusBadge = '<div class="upcoming-badge">À VENIR</div>';
+            } else if (match.status === 'finished') {
+                statusBadge = '<div class="finished-badge">TERMINÉ</div>';
+            }
+            
+            matchElement.innerHTML = `
+                ${statusBadge}
+                <div class="match-header">
+                    <span class="match-competition">${competition ? competition.name : 'Compétition'}</span>
+                    <span class="match-status">${match.status === 'live' ? match.minute + "'" : match.status}</span>
+                </div>
+                <div class="match-teams">
+                    <div class="team">
+                        <div class="team-logo">
+                            <img src="${homeLogo}" alt="${homeTeam.name}">
+                        </div>
+                        <div class="team-name">${homeTeam.name}</div>
+                    </div>
+                    <div class="match-score">${match.homeScore} - ${match.awayScore}</div>
+                    <div class="team">
+                        <div class="team-logo">
+                            <img src="${awayLogo}" alt="${awayTeam.name}">
+                        </div>
+                        <div class="team-name">${awayTeam.name}</div>
+                    </div>
+                </div>
+                <div class="match-time">${match.date} | ${match.time}</div>
+            `;
+            
+            return matchElement;
+        }
+
         // Afficher tous les matchs
         function renderAllMatches() {
             const container = document.getElementById('allMatchesContainer');
@@ -1391,51 +1459,7 @@
             container.innerHTML = '';
             
             appData.matches.forEach(match => {
-                const homeTeam = getTeamById(match.homeTeamId);
-                const awayTeam = getTeamById(match.awayTeamId);
-                const competition = getCompetitionById(match.competition);
-                
-                // Obtenir les images personnalisées
-                const homeLogo = getCustomImage('team-logo', `team-${homeTeam.id}`, homeTeam.logo);
-                const awayLogo = getCustomImage('team-logo', `team-${awayTeam.id}`, awayTeam.logo);
-                
-                const matchElement = document.createElement('div');
-                matchElement.className = `match-card ${match.status}`;
-                
-                let statusBadge = '';
-                if (match.status === 'live') {
-                    statusBadge = '<div class="live-badge">EN DIRECT</div>';
-                } else if (match.status === 'upcoming') {
-                    statusBadge = '<div class="upcoming-badge">À VENIR</div>';
-                } else if (match.status === 'finished') {
-                    statusBadge = '<div class="finished-badge">TERMINÉ</div>';
-                }
-                
-                matchElement.innerHTML = `
-                    ${statusBadge}
-                    <div class="match-header">
-                        <span class="match-competition">${competition ? competition.name : 'Compétition'}</span>
-                        <span class="match-status">${match.status === 'live' ? match.minute + "'" : match.status}</span>
-                    </div>
-                    <div class="match-teams">
-                        <div class="team">
-                            <div class="team-logo">
-                                <img src="${homeLogo}" alt="${homeTeam.name}">
-                            </div>
-                            <div class="team-name">${homeTeam.name}</div>
-                        </div>
-                        <div class="match-score">${match.homeScore} - ${match.awayScore}</div>
-                        <div class="team">
-                            <div class="team-logo">
-                                <img src="${awayLogo}" alt="${awayTeam.name}">
-                            </div>
-                            <div class="team-name">${awayTeam.name}</div>
-                        </div>
-                    </div>
-                    <div class="match-time">${match.date} | ${match.time}</div>
-                `;
-                
-                container.appendChild(matchElement);
+                container.appendChild(createMatchElement(match));
             });
         }
 
@@ -1753,41 +1777,7 @@
             }
             container.innerHTML = '';
             matches.forEach(match => {
-                const homeTeam = getTeamById(match.homeTeamId);
-                const awayTeam = getTeamById(match.awayTeamId);
-                const competition = getCompetitionById(match.competition);
-                const homeLogo = getCustomImage('team-logo', `team-${homeTeam.id}`, homeTeam.logo);
-                const awayLogo = getCustomImage('team-logo', `team-${awayTeam.id}`, awayTeam.logo);
-                const matchElement = document.createElement('div');
-                matchElement.className = `match-card ${match.status}`;
-                let statusBadge = '';
-                if (match.status === 'live') statusBadge = '<div class="live-badge">EN DIRECT</div>';
-                else if (match.status === 'upcoming') statusBadge = '<div class="upcoming-badge">À VENIR</div>';
-                else if (match.status === 'finished') statusBadge = '<div class="finished-badge">TERMINÉ</div>';
-                matchElement.innerHTML = `
-                    ${statusBadge}
-                    <div class="match-header">
-                        <span class="match-competition">${competition ? competition.name : 'Compétition'}</span>
-                        <span class="match-status">${match.status === 'live' ? match.minute + "'" : match.status}</span>
-                    </div>
-                    <div class="match-teams">
-                        <div class="team">
-                            <div class="team-logo">
-                                <img src="${homeLogo}" alt="${homeTeam.name}">
-                            </div>
-                            <div class="team-name">${homeTeam.name}</div>
-                        </div>
-                        <div class="match-score">${match.homeScore} - ${match.awayScore}</div>
-                        <div class="team">
-                            <div class="team-logo">
-                                <img src="${awayLogo}" alt="${awayTeam.name}">
-                            </div>
-                            <div class="team-name">${awayTeam.name}</div>
-                        </div>
-                    </div>
-                    <div class="match-time">${match.date} | ${match.time}</div>
-                `;
-                container.appendChild(matchElement);
+                container.appendChild(createMatchElement(match));
             });
         }
 
@@ -1801,72 +1791,11 @@
             }
             container.innerHTML = '';
             matches.forEach(match => {
-                const homeTeam = getTeamById(match.homeTeamId);
-                const awayTeam = getTeamById(match.awayTeamId);
-                const competition = getCompetitionById(match.competition);
-                const homeLogo = getCustomImage('team-logo', `team-${homeTeam.id}`, homeTeam.logo);
-                const awayLogo = getCustomImage('team-logo', `team-${awayTeam.id}`, awayTeam.logo);
-                const matchElement = document.createElement('div');
-                matchElement.className = `match-card ${match.status}`;
-                let statusBadge = '';
-                if (match.status === 'live') statusBadge = '<div class="live-badge">EN DIRECT</div>';
-                else if (match.status === 'upcoming') statusBadge = '<div class="upcoming-badge">À VENIR</div>';
-                else if (match.status === 'finished') statusBadge = '<div class="finished-badge">TERMINÉ</div>';
-                matchElement.innerHTML = `
-                    ${statusBadge}
-                    <div class="match-header">
-                        <span class="match-competition">${competition ? competition.name : 'Compétition'}</span>
-                        <span class="match-status">${match.status === 'live' ? match.minute + "'" : match.status}</span>
-                    </div>
-                    <div class="match-teams">
-                        <div class="team">
-                            <div class="team-logo">
-                                <img src="${homeLogo}" alt="${homeTeam.name}">
-                            </div>
-                            <div class="team-name">${homeTeam.name}</div>
-                        </div>
-                        <div class="match-score">${match.homeScore} - ${match.awayScore}</div>
-                        <div class="team">
-                            <div class="team-logo">
-                                <img src="${awayLogo}" alt="${awayTeam.name}">
-                            </div>
-                            <div class="team-name">${awayTeam.name}</div>
-                        </div>
-                    </div>
-                    <div class="match-time">${match.date} | ${match.time}</div>
-                `;
-                container.appendChild(matchElement);
+                container.appendChild(createMatchElement(match));
             });
         }
 
         // Ajout : Affichage des actualités dans la section "Actualités"
-        function renderAllNews() {
-            const container = document.getElementById('allNewsContainer');
-            if (!container) return;
-            
-            container.innerHTML = '';
-            
-            appData.news.forEach(news => {
-                // Obtenir l'image personnalisée
-                const newsImage = getCustomImage('news-image', `news-${news.id}`, news.image);
-                
-                const newsElement = document.createElement('div');
-                newsElement.className = 'news-card';
-                newsElement.innerHTML = `
-                    <div class="news-image">
-                        <img src="${newsImage}" alt="${news.title}">
-                    </div>
-                    <div class="news-content">
-                        <div class="news-title">${news.title}</div>
-                        <div class="news-excerpt">${news.excerpt}</div>
-                        <div class="news-date">${news.date} | ${news.category}</div>
-                    </div>
-                `;
-                
-                container.appendChild(newsElement);
-            });
-        }
-
         // Simuler des mises à jour en temps réel
         function simulateLiveUpdates() {
             // Mettre à jour les minutes des matchs en direct
