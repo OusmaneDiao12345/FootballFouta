@@ -407,6 +407,18 @@
     </div>
 
     <script>
+        // Configuration constants
+        const CONFIG = {
+            UPLOAD_STATUS_TIMEOUT: 5000,
+            LIVE_UPDATE_INTERVAL: 5000
+        };
+
+        // Demo credentials (for reference)
+        const DEMO_USERS = {
+            admin: { username: 'admin', password: 'admin123' },
+            user: { username: 'user', password: 'user123' }
+        };
+
         // Données complètes de l'application avec 14 équipes réelles
         const appData = {
             competitions: [
@@ -813,18 +825,38 @@
         generatePlayersForOtherTeams();
 
         // Fonctions utilitaires
+        /**
+         * Récupère une équipe par son ID
+         * @param {number} id - L'identifiant de l'équipe
+         * @returns {Object|undefined} L'objet équipe ou undefined si non trouvé
+         */
         function getTeamById(id) {
             return appData.teams.find(team => team.id === id);
         }
 
+        /**
+         * Récupère un joueur par son ID
+         * @param {number} id - L'identifiant du joueur
+         * @returns {Object|undefined} L'objet joueur ou undefined si non trouvé
+         */
         function getPlayerById(id) {
             return appData.players.find(player => player.id === id);
         }
 
+        /**
+         * Récupère tous les joueurs d'une équipe
+         * @param {number} teamId - L'identifiant de l'équipe
+         * @returns {Array} Liste des joueurs de l'équipe
+         */
         function getPlayersByTeamId(teamId) {
             return appData.players.filter(player => player.teamId === teamId);
         }
 
+        /**
+         * Récupère une compétition par son ID
+         * @param {string} id - L'identifiant de la compétition
+         * @returns {Object|undefined} L'objet compétition ou undefined si non trouvé
+         */
         function getCompetitionById(id) {
             return appData.competitions.find(comp => comp.id === id);
         }
@@ -1275,7 +1307,7 @@
             
             setTimeout(() => {
                 statusDiv.style.display = 'none';
-            }, 5000);
+            }, CONFIG.UPLOAD_STATUS_TIMEOUT);
         }
 
         // Obtenir une image personnalisée ou utiliser celle par défaut
@@ -1402,7 +1434,11 @@
             });
         }
 
-        // Helper function to create a match element
+        /**
+         * Crée un élément DOM pour afficher un match
+         * @param {Object} match - L'objet match contenant les informations du match
+         * @returns {HTMLDivElement} L'élément DOM du match
+         */
         function createMatchElement(match) {
             const homeTeam = getTeamById(match.homeTeamId);
             const awayTeam = getTeamById(match.awayTeamId);
@@ -1451,7 +1487,9 @@
             return matchElement;
         }
 
-        // Afficher tous les matchs
+        /**
+         * Affiche tous les matchs dans le conteneur
+         */
         function renderAllMatches() {
             const container = document.getElementById('allMatchesContainer');
             if (!container) return;
@@ -1767,7 +1805,10 @@
             });
         }
 
-        // Filtrer les matchs par compétition
+        /**
+         * Filtre et affiche les matchs par compétition
+         * @param {string} competitionId - L'ID de la compétition ('all' pour toutes)
+         */
         function filterMatchesByCompetition(competitionId) {
             const container = document.getElementById('allMatchesContainer');
             if (!container) return;
@@ -1781,7 +1822,10 @@
             });
         }
 
-        // Filtrer les matchs par statut
+        /**
+         * Filtre et affiche les matchs par statut
+         * @param {string} status - Le statut du match ('all', 'live', 'upcoming', 'finished')
+         */
         function filterMatchesByStatus(status) {
             const container = document.getElementById('allMatchesContainer');
             if (!container) return;
@@ -1832,7 +1876,7 @@
                     renderLiveMatches();
                 }
                 
-            }, 5000); // Mise à jour toutes les 5 secondes
+            }, CONFIG.LIVE_UPDATE_INTERVAL); // Mise à jour toutes les 5 secondes
         }
 
         // Démarrer les mises à jour en temps réel
